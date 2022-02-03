@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Error 500</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+</head>
+
+<style>
+  :root {
+    --main-space: 20px;
+    --main-textColor: #6E6E6E;
+    --contentIconError-size: 120px;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    background: #ffffff;
+    background: linear-gradient(145deg, #ffffff 0%, #ffffff 50%, #f9f9f9 50%, #f9f9f9 100%);
+
+
+
+
+  }
+
+  .mainContainer {
+    font-family: 'Kanit', sans-serif;
+    width: 100vw;
+    height: 100vh;
+    min-height: var(--contentIconError-size);
+    min-width: var(--contentIconError-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--main-textColor);
+  }
+
+  .contentError {
+    display: flex;
+    padding: var(--main-space);
+  }
+
+  .contentError>* {}
+
+  .contentError .contentError-icon {
+    padding: 10px;
+    border-radius: 100%;
+    height: var(--contentIconError-size);
+    width: var(--contentIconError-size);
+    min-height: var(--contentIconError-size);
+    min-width: var(--contentIconError-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .contentError .contentError-icon::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    border: 1px dashed var(--main-textColor);
+    border-radius: 100%;
+    position: absolute;
+    animation: rotating 15s linear infinite;
+  }
+
+  .contentError .contentError-icon .icon {
+    height: 65%;
+  }
+
+  .contentError .contentError-icon svg {
+    height: 100%;
+    animation: colorFade 4s linear infinite;
+  }
+
+  .contentError .contentError-icon svg path {
+    fill: var(--main-textColor);
+  }
+
+  .contentError .contentError-textDetail {
+    line-height: normal;
+    padding-left: var(--main-space);
+  }
+
+  .contentError .contentError-textDetail .errorCode {
+    font-size: 4rem;
+    line-height: 3.5rem;
+    text-shadow: 3px 2px 1px rgb(0 0 0 / 30%);
+  }
+
+  .contentError .contentError-textDetail .errorTitle {
+    font-size: 1.5rem;
+    line-height: normal;
+  }
+
+  .contentError .contentError-textDetail .errorDescriptions {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: normal;
+    word-break: break-all;
+    word-break: break-word;
+  }
+
+  .contentError .contentError-textDetail .errorDescriptions p {
+    margin: 0;
+    word-break: break-all;
+    word-break: break-word;
+  }
+
+  @keyframes rotating {
+    from {
+      -ms-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    to {
+      -ms-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes colorFade {
+    0% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: .7;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+</style>
+
+<body>
+  <div class="mainContainer">
+    <div class="contentError">
+      <div class="contentError-icon">
+        <div class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="105" height="104.968" viewBox="0 0 105 104.968">
+            <path id="api"
+              d="M208.777,109.852l-5.456-5.456a1.01,1.01,0,0,0-.734-.3,1.065,1.065,0,0,0-.733.3l-9.793,9.793a25.765,25.765,0,0,0-32.634,3.127l-13.113,13.113a1.033,1.033,0,0,0,0,1.454l34.964,34.964a1.01,1.01,0,0,0,.734.3,1.088,1.088,0,0,0,.734-.3l13.113-13.113a25.763,25.763,0,0,0,3.127-32.622l9.793-9.793A1.049,1.049,0,0,0,208.777,109.852Zm-19.123,37.692-7.644,7.644L157.972,131.15l7.644-7.644a17,17,0,1,1,24.038,24.038Zm-24.476,13.512a1.033,1.033,0,0,0-1.454,0l-8.57,8.57-11.62-11.62,8.583-8.583a1.033,1.033,0,0,0,0-1.454l-4.684-4.684a1.033,1.033,0,0,0-1.454,0l-8.583,8.583-5.533-5.533a1.01,1.01,0,0,0-.733-.3,1.089,1.089,0,0,0-.734.3l-13.1,13.113a25.763,25.763,0,0,0-3.127,32.622l-9.793,9.793a1.033,1.033,0,0,0,0,1.454l5.456,5.456a1.01,1.01,0,0,0,.733.3,1.065,1.065,0,0,0,.733-.3l9.793-9.793a25.765,25.765,0,0,0,32.634-3.127l13.113-13.113a1.033,1.033,0,0,0,0-1.454l-5.533-5.533,8.583-8.583a1.033,1.033,0,0,0,0-1.454Zm-17.655,28.619a17,17,0,1,1-24.038-24.038l7.644-7.644,24.038,24.038Z"
+              transform="translate(-104.076 -104.1)" fill="#6e6e6e" />
+          </svg>
+        </div>
+      </div>
+      <div class="contentError-textDetail">
+        <div class="errorCode">500</div>
+        <div class="errorTitle">Internal Server Error !</div>
+        <div class="errorDescriptions">
+          <p>Oops, something went wrong.</p>
+          <p>Try to refresh this page or feel free to us if the problem persists.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
