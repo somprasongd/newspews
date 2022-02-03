@@ -46,3 +46,6 @@ deployment/volumes/pg_data/*
 !deployment/volumes/pg_data/.gitkeep
 deployment/volumes/pga/*
 !deployment/volumes/pga/.gitkeep
+
+.next
+node_modules
