@@ -1,0 +1,19 @@
+version: '2.4'
+services:
+  newspews-database:
+    image: postgres:12-alpine
+    container_name: newspews-database
+    restart: always
+    env_file:
+      - ./env/pg-variables.env
+    environment:
+      - TZ=Asia/Bangkok
+      - PGTZ=Asia/Bangkok
+    volumes:
+      - ./volumes/pg_data:/var/lib/postgresql/data
+    logging:
+      options:
+        max-size: 10m
+        max-file: '3'
+    healthcheck:
+      test: pg_isready -U postgres -h 127.0.0.1
