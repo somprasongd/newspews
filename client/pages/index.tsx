@@ -78,11 +78,9 @@ const Home: NextPage = (props: any) => {
         setResponse={setResponse}
       />
 
-      {console.log(response)}
-
       Type:{response?.type}
-
       NEWS/PEWS: {response?.score}
+      
       {/* <DrawerComfirm
           visible={openDrawer?.open}
           okText='ยืนยัน'
