@@ -9,12 +9,3 @@ export const callApi = (): any => {
     }
   })
 }
-
-export const callAdminApi = (): any => {
-  return axios.create({
-    baseURL: conf.BASE_API,
-    headers: {
-      'authorization': `Bearer ${localStorage.getItem('adminToken')}`
-    }
-  })
-}

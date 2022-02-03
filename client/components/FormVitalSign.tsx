@@ -16,6 +16,7 @@ interface FormVitalSignProps {
   behavior: any[] | null
   initialValues?: any
   deleteVitalSign?: any
+  setResponse?: any
 }
 
 const { Option } = Select
@@ -34,10 +35,10 @@ const rangeData = (max: any, min: any) => {
 
 const focusFields = ['weight', 'height', 'bp1', 'bp2', 'temp', 'map', 'pulse', 'rr', 'spo2', 'oxygen', 'waistline', 'hips', 'chest']
 
-
-export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, deleteVitalSign }: FormVitalSignProps) => {
+export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, deleteVitalSign, setResponse }: FormVitalSignProps) => {
   const router = useRouter()
   const [nextField, setNextField] = useState<any>(0)
+
   return <Form
     autoComplete='off'
     onChange={() => { }}
@@ -47,6 +48,10 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
   >
     {
       (values, form) => {
+        const handelReset = () => {
+          form.resetFields()
+          setResponse(null)
+        }
         return <>
           <Row gutter={[10, 10]} className=''>
 
@@ -204,7 +209,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                   </Col>
                   <Col span={12}>
                     <InputTypeNumber
-                      name='temperature'
+                      name='temp'
                       label='อุณหภูมิ'
                       lengthDecimalBefore={2}
                       lengthDecimalAfter={1}
@@ -332,7 +337,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                 {
                   (values?.newspewsAgeGroup === 10 || values?.yearDob > 15) ? <Row gutter={[6, 0]}>
                     <Col span={24}>
-                      <Form.Item name='avpu_code' label='AVPU'>
+                      <Form.Item name='avpu' label='AVPU'>
                         <Select onFocus={() => {
                           setNextField(null)
                         }}>
@@ -354,7 +359,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                   (values?.newspewsAgeGroup !== 10 || values?.yearDob <= 15) && <>
                     <Row gutter={[6, 0]}>
                       <Col span={24}>
-                        <Form.Item name='cardiovascular_code' label='CRT'>
+                        <Form.Item name='crt' label='CRT'>
                           <Select onFocus={() => {
                             setNextField(null)
                           }}>
@@ -371,7 +376,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                         </Form.Item>
                       </Col>
                       <Col span={24}>
-                        <Form.Item name='behavior_code' label='พฤติกรรม'>
+                        <Form.Item name='behavior' label='พฤติกรรม'>
                           <Select onFocus={() => {
                             setNextField(null)
                           }}>
@@ -390,7 +395,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                     </Row>
                     <Row gutter={[6, 0]}>
                       <Col span={12}>
-                        <Form.Item name='nebulize_code' label='ได้พ่นยา'>
+                        <Form.Item name='receivedNebulization' label='ได้พ่นยา'>
                           <Select onFocus={() => {
                             setNextField(null)
                           }}>
@@ -401,7 +406,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                         </Form.Item>
                       </Col>
                       <Col span={12}>
-                        <Form.Item name='vomiting_code' label='อาเจียนตลอด'>
+                        <Form.Item name='vomitting' label='อาเจียนตลอด'>
                           <Select onFocus={() => {
                             setNextField(null)
                           }}>
@@ -607,7 +612,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
               <Button block shape='round' type='primary' htmlType='submit'>คำนวน</Button>
             </Col>
             <Col span={deleteVitalSign ? 12 : 24}>
-              <Button block shape='round' htmlType="button" onClick={() => form.resetFields()}>ล้าง</Button>
+              <Button block shape='round' htmlType="button" onClick={handelReset}>ล้าง</Button>
             </Col>
             {
               deleteVitalSign && <Col span={12}>

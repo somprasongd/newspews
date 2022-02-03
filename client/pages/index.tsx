@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
-import { ChooseConfirmNewsPews } from '../components/ChooseConfirmNewsPews'
-import { DrawerComfirm } from '../components/DrawerConfirm'
 import { FormVitalSign } from '../components/FormVitalSign'
-import { PageLayout } from '../components/PageLayout'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { NextPage } from 'next'
+import { geolocated } from "react-geolocated";
+import { calculateNewsPews } from '../services/calculate'
 
-const Home: NextPage = ({ staffMachine, setStaffMachine, servicePoint }: any) => {
+const Home: NextPage = (props: any) => {
   const router = useRouter()
   const [crt, setCrt] = useState<any>([{
     id: 0, description: 'ชมพู capillary refill 1-2 วิ'
@@ -38,70 +37,53 @@ const Home: NextPage = ({ staffMachine, setStaffMachine, servicePoint }: any) =>
     id: 3, description: 'ซึม/สับสน/ไม่ค่อยตอบสนองต่อเจ็บ'
   }])
   const [initialValues, setInitialValues] = useState<any>(null)
-  const [openDrawer, setOpenDrawer] = useState<any>({
-    open: false,
-    data: {},
-    submit: {}
-  })
+  const [response, setResponse] = useState<any>(null)
 
   const onSubmit = async (values: any) => {
     const data = {
-      ...values,
-      bp: values?.bp?.[0] && values?.bp?.[1] ? `${values?.bp?.[0]}/${values?.bp?.[1]}` : null,
-      receivedNebulization: values?.receivedNebulization ? values?.receivedNebulization : null,
-      vomitting: values?.vomitting,
-      behavior: values?.behavior,
-      avpu: values?.avpu,
-      crt: values?.crt
-    }
-    const invalidValue: any[] = []
-    const mapKeyLang: any = {
-      avpu: 'AVPU',
-      rr: 'การหายใจ',
-      pulse: 'ชีพจร',
-      oxygen: 'Oxygen',
-      temp: 'อุณหภูมิ',
-      bp: 'ความดัน',
-      spo2: 'spo2',
-      behavior: 'พฤติกรรม',
-      crt: 'CRT',
-      receivedNebulization: 'ได้พ่นยา',
-      vomitting: 'อาเจียนตลอด'
-    }
-    if (values?.newspewsAgeGroup === 10) {
-      const validData = ['avpu', 'rr', 'pulse', 'oxygen', 'temp', 'bp', 'spo2']
-      validData?.forEach((v) => {
-        if (!data[v]) {
-          invalidValue.push(mapKeyLang[v])
-        }
-      })
-    } else if (values?.newspewsAgeGroup < 10) {
-      const validData = ['rr', 'pulse', 'behavior', 'crt', 'receivedNebulization', 'vomitting', 'oxygen']
-      validData?.forEach((v) => {
-        if (!data[v]) {
-          invalidValue.push(mapKeyLang[v])
-        }
-      })
+      age: values.age,
+      diastolic: values?.bp?.[0],
+      systolic: values?.bp?.[1],
+      nebulize_code: values?.receivedNebulization ? values?.receivedNebulization : null,
+      vomiting_code: values?.vomitting,
+      behavior_code: values?.behavior,
+      avpu_code: values?.avpu,
+      cardiovascular_code: values?.crt,
+      respiratory_rate: values?.rr,
+      heart_rate: values?.pulse,
+      temperature: values?.temp,
+      oxygen: values?.oxygen,
+      spo2: values?.spo2,
+      geo: {
+        latitude: props?.coords?.latitude,
+        longitude: props?.coords?.longitude
+      }
     }
     console.log(data)
+    const res = await calculateNewsPews(data)
+    setResponse(res.data)
   }
 
   return <>
     <Head>
       <title>บันทึก Vital Signs</title>
     </Head>
-    <PageLayout title='เพิ่ม Vital Signs' onBack={() => router.back()}
-      user={staffMachine} setUser={setStaffMachine}
-      servicePoint={servicePoint} hideHeader>
-      <>
-        <FormVitalSign
-          initialValues={initialValues}
-          submit={onSubmit}
-          crt={crt}
-          avpu={avpu}
-          behavior={behavior}
-        />
-        {/* <DrawerComfirm
+    <>
+      <FormVitalSign
+        initialValues={initialValues}
+        submit={onSubmit}
+        crt={crt}
+        avpu={avpu}
+        behavior={behavior}
+        setResponse={setResponse}
+      />
+
+      {console.log(response)}
+
+      Type:{response?.type}
+
+      NEWS/PEWS: {response?.score}
+      {/* <DrawerComfirm
           visible={openDrawer?.open}
           okText='ยืนยัน'
           closeText='ยกเลิก'
@@ -112,9 +94,13 @@ const Home: NextPage = ({ staffMachine, setStaffMachine, servicePoint }: any) =>
           onCancel={() => { setOpenDrawer({ open: false, data: {}, submit: {} }) }}>
           <ChooseConfirmNewsPews data={openDrawer?.data} />
         </DrawerComfirm> */}
-      </>
-    </PageLayout>
+    </>
   </>
 }
 
-export default Home
+export default geolocated({
+  positionOptions: {
+    enableHighAccuracy: false,
+  },
+  userDecisionTimeout: 5000,
+})(Home)
