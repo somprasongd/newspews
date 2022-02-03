@@ -16,43 +16,43 @@ export const getAge = (birth: Dayjs) => {
   const ageMonth = Math.floor((diff_date % 31536000000) / 2628000000)
   const ageDay = Math.floor(((diff_date % 31536000000) % 2628000000) / 86400000)
   const age = {
-    yearDob: ageYear,
-    monthDob: ageMonth,
-    dayDob: ageDay
+    year: ageYear,
+    month: ageMonth,
+    day: ageDay
   }
   const newspewsAgeGroup = calculateAgeGroup(age)
   return {
-    ...age,
+    age: age,
     newspewsAgeGroup: newspewsAgeGroup
   }
 }
 
 export const calculateAgeGroup = (values: any) => {
-  const { yearDob, monthDob, dayDob } = values
-  if (yearDob == 0) {
-    if (monthDob == 0) {
-      if (dayDob <= 3) {
+  const { year, month, day } = values
+  if (year == 0) {
+    if (month == 0) {
+      if (day <= 3) {
         return 1;
       } else {
         return 2;
       }
     } else {
-      if (monthDob == 1) {
+      if (month == 1) {
         return 3;
       } else {
         return 4;
       }
     }
   } else {
-    if (yearDob <= 2) {
+    if (year <= 2) {
       return 5;
-    } else if (yearDob <= 5) {
+    } else if (year <= 5) {
       return 6;
-    } else if (yearDob <= 7) {
+    } else if (year <= 7) {
       return 7;
-    } else if (yearDob <= 9) {
+    } else if (year <= 9) {
       return 8;
-    } else if (yearDob <= 15) {
+    } else if (year <= 15) {
       return 9;
     } else {
       return 10;

@@ -7,7 +7,7 @@ import { CardPatientDetail } from './CardPatientDetail'
 import { InputTypeNumber } from './InputTypeNumber'
 import { bmiColor, bmiCalc, getAge } from '../shared/func'
 import { useState } from 'react'
-import { Dayjs } from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 
 interface FormVitalSignProps {
   submit?: (values: any) => void
@@ -39,6 +39,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
   const router = useRouter()
   const [nextField, setNextField] = useState<any>(0)
   return <Form
+    autoComplete='off'
     onChange={() => { }}
     layout='vertical'
     initialValues={initialValues}
@@ -47,12 +48,6 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
     {
       (values, form) => {
         return <>
-          <Form.Item name='latestVsId' label='latestVsId' hidden>
-            <Input type='number' />
-          </Form.Item>
-          <Form.Item name='tVisitId' label='tVisitId' hidden>
-            <Input type='number' />
-          </Form.Item>
           <Row gutter={[10, 10]} className=''>
 
             <Col className='page-laout-patient-selected' span={24}>
@@ -127,17 +122,17 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                         <label>อายุ</label>
                       </Col>
                       <Col span={7}>
-                        <Form.Item name='yearDob' >
+                        <Form.Item name={['age', 'year']} >
                           <Input type='number' pattern="[0-9.]*" inputMode="decimal" addonAfter='ปี' />
                         </Form.Item>
                       </Col>
                       <Col span={7}>
-                        <Form.Item name='monthDob' >
+                        <Form.Item name={['age', 'month']} >
                           <Input type='number' pattern="[0-9.]*" inputMode="decimal" addonAfter='เดือน' />
                         </Form.Item>
                       </Col>
                       <Col span={7}>
-                        <Form.Item name='dayDob' >
+                        <Form.Item name={['age', 'day']} >
                           <Input type='number' pattern="[0-9.]*" inputMode="decimal" addonAfter='วัน' />
                         </Form.Item>
                       </Col>
@@ -149,6 +144,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                             onFocus={() => {
                               setNextField(null)
                             }}
+                            disabledDate={(current) => current && current > dayjs()}
                             onChange={(value) => form.setFieldsValue({ ...getAge(value as Dayjs) })}
                             placeholder=''
                             locale={th_TH}
@@ -208,7 +204,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                   </Col>
                   <Col span={12}>
                     <InputTypeNumber
-                      name='temp'
+                      name='temperature'
                       label='อุณหภูมิ'
                       lengthDecimalBefore={2}
                       lengthDecimalAfter={1}
@@ -336,7 +332,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                 {
                   (values?.newspewsAgeGroup === 10 || values?.yearDob > 15) ? <Row gutter={[6, 0]}>
                     <Col span={24}>
-                      <Form.Item name='avpu' label='AVPU'>
+                      <Form.Item name='avpu_code' label='AVPU'>
                         <Select onFocus={() => {
                           setNextField(null)
                         }}>
@@ -358,7 +354,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                   (values?.newspewsAgeGroup !== 10 || values?.yearDob <= 15) && <>
                     <Row gutter={[6, 0]}>
                       <Col span={24}>
-                        <Form.Item name='crt' label='CRT'>
+                        <Form.Item name='cardiovascular_code' label='CRT'>
                           <Select onFocus={() => {
                             setNextField(null)
                           }}>
@@ -375,7 +371,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                         </Form.Item>
                       </Col>
                       <Col span={24}>
-                        <Form.Item name='behavior' label='พฤติกรรม'>
+                        <Form.Item name='behavior_code' label='พฤติกรรม'>
                           <Select onFocus={() => {
                             setNextField(null)
                           }}>
@@ -394,7 +390,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                     </Row>
                     <Row gutter={[6, 0]}>
                       <Col span={12}>
-                        <Form.Item name='receivedNebulization' label='ได้พ่นยา'>
+                        <Form.Item name='nebulize_code' label='ได้พ่นยา'>
                           <Select onFocus={() => {
                             setNextField(null)
                           }}>
@@ -405,7 +401,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                         </Form.Item>
                       </Col>
                       <Col span={12}>
-                        <Form.Item name='vomitting' label='อาเจียนตลอด'>
+                        <Form.Item name='vomiting_code' label='อาเจียนตลอด'>
                           <Select onFocus={() => {
                             setNextField(null)
                           }}>
@@ -608,7 +604,7 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
           </Row >
           <Row gutter={[10, 10]} className='footer-control'>
             <Col span={24}>
-              <Button block shape='round' type='primary' htmlType='submit'>บันทึก</Button>
+              <Button block shape='round' type='primary' htmlType='submit'>คำนวน</Button>
             </Col>
             <Col span={deleteVitalSign ? 12 : 24}>
               <Button block shape='round' htmlType="button" onClick={() => form.resetFields()}>ล้าง</Button>
