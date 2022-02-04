@@ -87,7 +87,7 @@ export const FormVitalSign = ({
           form.resetFields();
           setResponse(null);
         }
-        console.log(values.ageDate && calculateAgeGroup(values.ageDate) === 10)
+
         return (
           <Row gutter={[8, 8]}>
             <Col span={24}>
