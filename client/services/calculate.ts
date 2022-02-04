@@ -7,11 +7,12 @@ export const calculateNewsPews = async (data: any): Promise<any> => {
     }
 
     const result = window.calScore(JSON.stringify(data))
-    if ((result != null) && ('error' in result)) {
-      console.log("CalculateNewsPews Go return value", result)
+    const json = JSON.parse(result)
+    if ((json != null) && ('error' in json)) {
+      console.log("CalculateNewsPews Go return value", json)
       return {}
     }
-    return result
+    return json
   } catch (err) {
     console.log('calculateNewsPews', err)
   }

@@ -64,9 +64,16 @@ func calWrapper() js.Func {
 			return result
 		}
 
-		fmt.Println(resp)
-
-		return resp
+		json, err := json.MarshalIndent(resp, "", "  ")
+		if err != nil {
+			errStr := fmt.Sprintf("unable to parse JSON. Error %s occurred\n", err)
+			fmt.Println(errStr)
+			result := map[string]interface{}{
+				"error": errStr,
+			}
+			return result
+		}
+		return string(json)
 	})
 	return jsonFunc
 }
