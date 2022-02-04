@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { NextPage } from 'next'
 import { geolocated } from "react-geolocated";
 import { calculateNewsPews } from '../services/calculate'
+
 import { Row, Col, Card, Layout, Typography } from 'antd'
 const { Content } = Layout
 const { Title } = Typography
