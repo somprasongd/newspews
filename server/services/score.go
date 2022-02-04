@@ -3,8 +3,6 @@ package services
 import (
 	"github.com/somprasongd/newspews/dto"
 	"github.com/somprasongd/newspews/errs"
-	"github.com/somprasongd/newspews/logger"
-	"github.com/somprasongd/newspews/repository"
 	"github.com/somprasongd/newspews/validator"
 )
 
@@ -32,34 +30,20 @@ type ScoreService interface {
 	CalculateScore(dto dto.InputDTO) (*dto.ScoreResponse, *errs.AppError)
 }
 
-type defaultScoreService struct {
-	repo repository.AccessLogRepo
+type scoreService struct {
 }
 
-func NewDefaultScoreService(repo repository.AccessLogRepo) *defaultScoreService {
-	return &defaultScoreService{
-		repo: repo,
-	}
+func NewScoreService() ScoreService {
+	return &scoreService{}
 }
 
-func (s defaultScoreService) CalculateScore(input dto.InputDTO) (*dto.ScoreResponse, *errs.AppError) {
+func (s scoreService) CalculateScore(input dto.InputDTO) (*dto.ScoreResponse, *errs.AppError) {
 	// validate
 	err := validator.ValidateStruct(input)
 	if err != nil {
 		appErr := errs.NewBadRequestError(err.Error())
 
 		return nil, appErr
-	}
-	// save access log
-	if input.Geo != nil {
-		accLog := repository.AccessLog{
-			Latitude:  input.Geo.Latitude,
-			Longitude: input.Geo.Longitude,
-		}
-		err := s.repo.Create(&accLog)
-		if err != nil {
-			logger.Error(err.Error())
-		}
 	}
 
 	// first get age group
