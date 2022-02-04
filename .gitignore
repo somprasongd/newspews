@@ -48,4 +48,5 @@ deployment/volumes/pga/*
 !deployment/volumes/pga/.gitkeep
 
 .next
+out/
 node_modules

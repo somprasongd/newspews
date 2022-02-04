@@ -14,18 +14,12 @@ type InputDTO struct {
 	BehaviorCode string  `json:"behavior_code"`
 	NebulizeCode string  `json:"nebulize_code"`
 	VomitingCode string  `json:"vomiting_code"`
-	Geo          *Geo    `json:"geo"`
 }
 
 type Age struct {
 	Year  uint `json:"year"`
 	Month uint `json:"month"`
 	Day   uint `json:"day"`
-}
-
-type Geo struct {
-	Latitude  string `json:"latitude"`
-	Longitude string `json:"longitude"`
 }
 
 type ScoreResponse struct {
