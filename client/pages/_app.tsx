@@ -11,6 +11,7 @@ import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
 import 'dayjs/locale/th'
+import { MetaHeader } from '../components/MetaHeader'
 
 dayjs.locale('th')
 dayjs.extend(updateLocale)
@@ -39,6 +40,9 @@ dayjs.extend(utc)
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <ConfigProvider locale={th}>
+    {typeof window === 'undefined' ? null :
+      <MetaHeader title='web vitalsign' />
+    }
     <Component {...pageProps} />
   </ConfigProvider>
 }

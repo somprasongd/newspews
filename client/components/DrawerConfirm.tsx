@@ -12,7 +12,7 @@ interface DrawerComfirmProps {
 }
 
 export const DrawerComfirm = ({ visible, onOk, onCancel, children, closeText, okText, hasForm, otherBtn }: DrawerComfirmProps) => {
-  return <Drawer className='modal-confirm' visible={visible} closable={false} placement='bottom' title={undefined}>
+  return <Drawer visible={visible} closable={false} placement='bottom' title={undefined}>
     <Row gutter={[10, 10]}>
       <Col span={24}>
         {children}
@@ -20,13 +20,13 @@ export const DrawerComfirm = ({ visible, onOk, onCancel, children, closeText, ok
       {
         !hasForm && <>
           <Col span={otherBtn && otherBtn?.length === 1 ? '12' : '24'}>
-            <Button className='' shape='round' block type='primary' htmlType='button' onClick={onOk}>{okText ? okText : 'ตกลง'}</Button>
+            <Button shape='round' block type='primary' htmlType='button' onClick={onOk}>{okText ? okText : 'ตกลง'}</Button>
           </Col>
           {
             otherBtn && otherBtn?.map((b: any, i: any) => <Col span={12} key={i}>{b}</Col>)
           }
           <Col span={24}>
-            <Button className='' shape='round' block htmlType='button' onClick={onCancel}>{closeText ? closeText : 'ยกเลิก'}</Button>
+            <Button shape='round' block htmlType='button' onClick={onCancel}>{closeText ? closeText : 'ยกเลิก'}</Button>
           </Col>
         </>
       }
