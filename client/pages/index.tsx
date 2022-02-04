@@ -14,56 +14,56 @@ const Home: NextPage = (props: any) => {
   const router = useRouter();
   const [crt, setCrt] = useState<any>([
     {
-      id: 0,
+      id: '0',
       description: 'ชมพู capillary refill 1-2 วิ',
     },
     {
-      id: 1,
+      id: '1',
       description: 'ซีด capillary refill 3 วิ',
     },
     {
-      id: 2,
+      id: '2',
       description: 'เทา capillary refill 4 วิ',
     },
     {
-      id: 3,
+      id: '3',
       description: 'ตัวลาย capillary refill ≥5 วิ',
     },
   ]);
   const [avpu, setAvpu] = useState<any>([
     {
-      id: 0,
+      id: '0',
       description: 'Alert ตื่นดี',
     },
     {
-      id: 1,
+      id: '1',
       description: 'Voice ตอบสนองต่อการเรียก',
     },
     {
-      id: 2,
+      id: '2',
       description: 'Pain ตอบสนองต่อเจ็บ',
     },
     {
-      id: 3,
+      id: '3',
       description: 'Unresponsive ไม่ตอบสนอง',
     },
   ]);
 
   const [behavior, setBehavior] = useState<any>([
     {
-      id: 0,
+      id: '0',
       description: 'เล่นดี',
     },
     {
-      id: 1,
+      id: '1',
       description: 'หลับ',
     },
     {
-      id: 2,
+      id: '2',
       description: 'กระสับกระส่าย',
     },
     {
-      id: 3,
+      id: '3',
       description: 'ซึม/สับสน/ไม่ค่อยตอบสนองต่อเจ็บ',
     },
   ]);
@@ -79,18 +79,20 @@ const Home: NextPage = (props: any) => {
           month: Number(month),
           day: Number(day),
         },
-        systolic: Number(values?.bp?.[0]),
-        diastolic: Number(values?.bp?.[1]),
-        nebulize_code: values?.receivedNebulization,
-        vomiting_code: values?.vomitting,
-        behavior_code: values?.behavior,
-        avpu_code: values?.avpu,
-        cardiovascular_code: values?.crt,
-        respiratory_rate: Number(values?.rr),
-        heart_rate: Number(values?.pulse),
-        temperature: Number(values?.temp),
-        oxygen: Number(values?.oxygen),
-        spo2: Number(values?.spo2),
+        systolic: values?.bp?.[0] ? Number(values?.bp?.[0]) : 0,
+        diastolic: values?.bp?.[1] ? Number(values?.bp?.[1]) : 0,
+        nebulize_code: values?.receivedNebulization
+          ? values?.receivedNebulization
+          : '',
+        vomiting_code: values?.vomitting ? values?.vomitting : '',
+        behavior_code: values?.behavior ? values?.behavior : '',
+        avpu_code: values?.avpu ? values?.avpu : '',
+        cardiovascular_code: values?.crt ? values?.crt : '',
+        respiratory_rate: values?.rr ? Number(values?.rr) : 0,
+        heart_rate: values?.pulse ? Number(values?.pulse) : 0,
+        temperature: values?.temp ? Number(values?.temp) : 0,
+        oxygen: values?.oxygen ? Number(values?.oxygen) : 0,
+        spo2: values?.spo2 ? Number(values?.spo2) : 0,
       };
       if (process.env.NEXT_PUBLIC_USE_GEO === 'true') {
         data = {
@@ -103,7 +105,8 @@ const Home: NextPage = (props: any) => {
       }
       console.log(data);
       const res = await calculateNewsPews(data);
-      setResponse(res.data);
+
+      setResponse(res);
     }
   };
 
@@ -118,7 +121,7 @@ const Home: NextPage = (props: any) => {
       >
         <Row>
           <Col span={24} style={{ textAlign: 'center' }}>
-            <Title level={2}>web vitalsign</Title>
+            <Title level={2}>NEWS/PEWS</Title>
           </Col>
           <FormVitalSign
             initialValues={initialValues}

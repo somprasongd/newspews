@@ -42,9 +42,7 @@ dayjs.extend(utc);
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ConfigProvider locale={th}>
-      {typeof window === 'undefined' ? null : (
-        <MetaHeader title="web vitalsign" />
-      )}
+      {typeof window === 'undefined' ? null : <MetaHeader title="NEWS/PEWS" />}
       <Script
         src="wasm_exec.js"
         onLoad={() => {
