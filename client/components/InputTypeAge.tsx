@@ -8,9 +8,6 @@ type props = {
   allValues: any;
   form: any;
   nextField: any;
-  setNextField: any;
-  focusFields: any;
-  index: any;
   bp?: any;
   style?: any;
   disabled?: any;
@@ -22,10 +19,6 @@ export const InputTypeAge = ({
   addonAfter,
   allValues,
   form,
-  nextField,
-  setNextField,
-  focusFields,
-  index,
   bp,
   style,
   disabled
@@ -54,16 +47,6 @@ export const InputTypeAge = ({
         addonAfter={addonAfter}
         onChange={onChangeInput}
         style={style}
-        ref={(input) => {
-          if (bp && focusFields[nextField] === bp) {
-            input?.focus();
-          } else if (focusFields[nextField] === name) {
-            input?.focus();
-          }
-        }}
-        onFocus={() => {
-          setNextField(index);
-        }}
         inputMode="decimal"
       />
     </Form.Item>

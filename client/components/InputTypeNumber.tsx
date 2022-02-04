@@ -68,11 +68,11 @@ export const InputTypeNumber = ({
       nutri =
         e?.target?.value && bmi
           ? nutritionCalc(
-              e?.target?.value,
-              bmi,
-              patientData?.patient?.ptGenderId,
-              patientData?.patient?.ptDob
-            )
+            e?.target?.value,
+            bmi,
+            patientData?.patient?.ptGenderId,
+            patientData?.patient?.ptDob
+          )
           : undefined;
     }
     if (name === 'height') {
@@ -83,11 +83,11 @@ export const InputTypeNumber = ({
       nutri =
         allValues?.weight && bmi
           ? nutritionCalc(
-              allValues?.weight,
-              bmi,
-              patientData?.patient?.ptGenderId,
-              patientData?.patient?.ptDob
-            )
+            allValues?.weight,
+            bmi,
+            patientData?.patient?.ptGenderId,
+            patientData?.patient?.ptDob
+          )
           : undefined;
     }
     if (name !== 'weight' && name !== 'height') {
@@ -410,10 +410,10 @@ export const InputTypeNumber = ({
         nutri,
       });
     }
-  };
+  }
 
   return (
-    <Form.Item name={name} label={label} noStyle={bp}>
+    <Form.Item name={name} label={label} noStyle={bp} rules={rules}>
       <Input
         value={preValue}
         disabled={disabled}
