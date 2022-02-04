@@ -8,6 +8,7 @@ import { InputTypeNumber } from './InputTypeNumber'
 import { bmiColor, bmiCalc, getAge, calculateAgeGroup } from '../shared/func'
 import { useState } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
+import { InputTypeAge } from './InputTypeAge'
 const { Content } = Layout
 const { Text } = Typography
 
@@ -39,7 +40,6 @@ const rangeData = (max: any, min: any) => {
 const focusFields = ['ageDate', 'weight', 'height', 'bp1', 'bp2', 'temp', 'map', 'pulse', 'rr', 'spo2', 'oxygen', 'waistline', 'hips', 'chest']
 
 export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, deleteVitalSign, setResponse, response }: FormVitalSignProps) => {
-  const router = useRouter()
   const [nextField, setNextField] = useState<any>(0)
 
   return <Form
@@ -64,11 +64,14 @@ export const FormVitalSign = ({ submit, crt, avpu, behavior, initialValues, dele
                 <Col span={24}>
                   <Row gutter={[8, 8]}>
                     <Col span={24}>
-                      <Form.Item name={['ageDate']} label='อายุ (ปี.เดือน.วัน)' >
-                        <Input onFocus={() => {
-                          setNextField(1);
-                        }} />
-                      </Form.Item>
+                      <InputTypeAge
+                        allValues={values}
+                        form={form}
+                        index={1}
+                        nextField={nextField}
+                        setNextField={setNextField}
+                        focusFields={focusFields}
+                        name={'ageDate'} label='อายุ (ปี.เดือน.วัน)' />
                     </Col>
 
                     {/* <Col span={3}>
