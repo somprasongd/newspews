@@ -9,14 +9,14 @@ interface CardPatientDetailProps {
 }
 
 export const CardPatientDetail = ({ data, fullInfo }: CardPatientDetailProps) => {
-  return <Card className='patient-card patient-selected' loading={!data}>
+  return <Card loading={!data}>
     <Row gutter={[10, 10]}>
       <Col>
-        <Avatar src={data?.profileImg ? `data:image/jpeg;base64, ${data?.profileImg}` : ''} className='avatar-profile --big-size --patient' icon={<UserOutlined />} />
+        <Avatar src={data?.profileImg ? `data:image/jpeg;base64, ${data?.profileImg}` : ''} icon={<UserOutlined />} />
       </Col>
       <Col flex='auto'>
         <Row>
-          <Col className='info-patient-name'>{data?.ptName}</Col>
+          <Col >{data?.ptName}</Col>
         </Row>
         <Row>
           <Col span={12}>HN : {data?.hn}</Col>

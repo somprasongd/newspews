@@ -28,7 +28,7 @@ export const getAge = (birth: Dayjs) => {
 }
 
 export const calculateAgeGroup = (values: any) => {
-  const { year, month, day } = values
+  const [year = 0, month = 0, day = 0] = values.split('.')
   if (year == 0) {
     if (month == 0) {
       if (day <= 3) {
