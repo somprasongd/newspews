@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { NextPage } from 'next'
 import { geolocated } from "react-geolocated";
 import { calculateNewsPews } from '../services/calculate'
+import { Row, Col } from 'antd'
 
 const Home: NextPage = (props: any) => {
   const router = useRouter()
@@ -78,9 +79,15 @@ const Home: NextPage = (props: any) => {
         setResponse={setResponse}
       />
 
-      Type:{response?.type}
-      NEWS/PEWS: {response?.score}
-      
+      {response !== null && <Row gutter={[8, 8]}>
+        <Col span={24}>
+          Type:{response?.type}
+        </Col>
+        <Col span={24}>
+          NEWS/PEWS: {response?.score}
+        </Col>
+      </Row>}
+
       {/* <DrawerComfirm
           visible={openDrawer?.open}
           okText='ยืนยัน'
