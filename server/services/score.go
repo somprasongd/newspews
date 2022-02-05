@@ -170,10 +170,6 @@ var (
 )
 
 func calculateRRScore(ageGroup uint, rr uint) uint {
-	if rr == 0 {
-		return 0
-	}
-
 	idx := ageGroup - 1
 	rrMax := rrMaxs[idx]
 	rrMidu := rrMidus[idx]
@@ -213,10 +209,6 @@ var (
 )
 
 func calculateHRScore(ageGroup uint, hr uint) uint {
-	if hr == 0 {
-		return 0
-	}
-
 	idx := ageGroup - 1
 	hrMax := hrMaxs[idx]
 	hrMidu := hrMidus[idx]
@@ -250,10 +242,10 @@ func calculateHRScore(ageGroup uint, hr uint) uint {
 }
 
 func calculateO2supScore(ageGroup uint, oxygen uint) uint {
-	if oxygen == 0 {
-		return 0
-	}
 	if ageGroup == 10 {
+		if oxygen == 0 {
+			return 0
+		}
 		return 2
 	} else {
 		if oxygen <= 2 {
@@ -269,7 +261,7 @@ func calculateO2supScore(ageGroup uint, oxygen uint) uint {
 }
 
 func calculateBTScore(ageGroup uint, temp float32) uint {
-	if temp == 0 || ageGroup != 10 {
+	if ageGroup != 10 {
 		return 0
 	}
 	if temp <= 35 {
@@ -288,7 +280,7 @@ func calculateBTScore(ageGroup uint, temp float32) uint {
 // var bpMins = [10]uint{60, 70, 70, 70, 72, 76, 82, 86, 90, 90}
 
 func calculateBPScore(ageGroup uint, sys uint) uint {
-	if sys == 0 || ageGroup != 10 {
+	if ageGroup != 10 {
 		return 0
 	}
 	if sys < 90 {
@@ -311,7 +303,7 @@ func calculateBPScore(ageGroup uint, sys uint) uint {
 }
 
 func calculateO2satScore(ageGroup uint, spo2 uint) uint {
-	if spo2 == 0 || ageGroup != 10 {
+	if ageGroup != 10 {
 		return 0
 	}
 	if spo2 <= 91 {
