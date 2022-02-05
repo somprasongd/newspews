@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import { ConfigProvider } from 'antd';
 import th from 'antd/lib/locale/th_TH';
 import locale from 'antd/lib/date-picker/locale/th_TH';
-import '../styles/style.css'
+import '../styles/style.css';
 import 'antd/dist/antd.css';
 
 import dayjs from 'dayjs';
@@ -43,7 +43,9 @@ dayjs.extend(utc);
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ConfigProvider locale={th}>
-      {typeof window === 'undefined' ? null : <MetaHeader title="NEWS/PEWS" />}
+      {typeof window === 'undefined' ? null : (
+        <MetaHeader title="Early Warning Sign Calculator [NEWS/PEWS]" />
+      )}
       <Script
         src="wasm_exec.js"
         onLoad={() => {
