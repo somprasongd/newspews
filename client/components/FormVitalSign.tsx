@@ -8,6 +8,8 @@ import {
   Card,
   Typography,
   Alert,
+  Radio,
+  Space
 } from 'antd';
 import { InputTypeNumber } from './InputTypeNumber';
 import { calculateAgeGroup } from '../shared/func';
@@ -65,7 +67,7 @@ export const FormVitalSign = ({
     <Form
       {...layout}
       autoComplete="off"
-      onChange={() => {}}
+      onChange={() => { }}
       initialValues={initialValues}
       onFinish={submit}
     >
@@ -156,7 +158,7 @@ export const FormVitalSign = ({
                                       required:
                                         values.ageDate &&
                                         calculateAgeGroup(values.ageDate) ===
-                                          10,
+                                        10,
                                       pattern:
                                         /^(?=.)(?!0*$)(?:(?:(?:0|[1-2]?[0-9]?\d))|300?)$/g,
                                       message: `ความดันไม่ถูกต้อง`,
@@ -181,7 +183,7 @@ export const FormVitalSign = ({
                                       required:
                                         values.ageDate &&
                                         calculateAgeGroup(values.ageDate) ===
-                                          10,
+                                        10,
                                       pattern:
                                         /^(?=.)(?!0*$)(?:(?:(?:0|[1-1]?[0-9]?\d))|200?)$/g,
                                       message: `ความดันไม่ถูกต้อง`,
@@ -333,23 +335,17 @@ export const FormVitalSign = ({
                             label="AVPU"
                             rules={[{ required: true }]}
                           >
-                            <Select
-                              onFocus={() => {
-                                setNextField(null);
-                              }}
-                            >
-                              <Option key={0} value="">
-                                ต้องเลือก 1 ค่า
-                              </Option>
-                              )
-                              {avpu &&
-                                avpu?.length > 0 &&
-                                avpu?.map((a) => (
-                                  <Option key={a?.id} value={a?.id}>
-                                    {a?.description}
-                                  </Option>
-                                ))}
-                            </Select>
+                            <Radio.Group>
+                              <Space direction="vertical">
+                                {avpu &&
+                                  avpu?.length > 0 &&
+                                  avpu?.map((a) => (
+                                    <Radio key={a?.id} value={a?.id}>
+                                      {a?.description}
+                                    </Radio>
+                                  ))}
+                              </Space>
+                            </Radio.Group>
                           </Form.Item>
                         </Col>
                       </Row>
@@ -366,23 +362,17 @@ export const FormVitalSign = ({
                               label="CRT"
                               rules={[{ required: true }]}
                             >
-                              <Select
-                                onFocus={() => {
-                                  setNextField(null);
-                                }}
-                              >
-                                <Option key={0} value="">
-                                  ต้องเลือก 1 ค่า
-                                </Option>
-                                )
-                                {crt &&
-                                  crt?.length > 0 &&
-                                  crt?.map((c) => (
-                                    <Option key={c?.id} value={c?.id}>
-                                      {c?.description}
-                                    </Option>
-                                  ))}
-                              </Select>
+                              <Radio.Group>
+                                <Space direction="vertical">
+                                  {crt &&
+                                    crt?.length > 0 &&
+                                    crt?.map((c) => (
+                                      <Radio key={c?.id} value={c?.id}>
+                                        {c?.description}
+                                      </Radio>
+                                    ))}
+                                </Space>
+                              </Radio.Group>
                             </Form.Item>
                           </Col>
                           <Col span={24}>
@@ -391,23 +381,17 @@ export const FormVitalSign = ({
                               label="พฤติกรรม"
                               rules={[{ required: true }]}
                             >
-                              <Select
-                                onFocus={() => {
-                                  setNextField(null);
-                                }}
-                              >
-                                <Option key={0} value="">
-                                  ต้องเลือก 1 ค่า
-                                </Option>
-                                )
-                                {behavior &&
-                                  behavior?.length > 0 &&
-                                  behavior?.map((b) => (
-                                    <Option key={b?.id} value={b?.id}>
-                                      {b?.description}
-                                    </Option>
-                                  ))}
-                              </Select>
+                              <Radio.Group>
+                                <Space direction="vertical">
+                                  {behavior &&
+                                    behavior?.length > 0 &&
+                                    behavior?.map((b) => (
+                                      <Radio key={b?.id} value={b?.id}>
+                                        {b?.description}
+                                      </Radio>
+                                    ))}
+                                </Space>
+                              </Radio.Group>
                             </Form.Item>
                           </Col>
                         </Row>
@@ -418,21 +402,14 @@ export const FormVitalSign = ({
                               label="ได้พ่นยา"
                               rules={[{ required: true }]}
                             >
-                              <Select
-                                onFocus={() => {
-                                  setNextField(null);
-                                }}
-                              >
-                                <Option key="" value="">
-                                  ต้องเลือก 1 ค่า{' '}
-                                </Option>
-                                <Option key="1" value="1">
+                              <Radio.Group>
+                                <Radio key="1" value="1">
                                   ใช่
-                                </Option>
-                                <Option key="0" value="0">
+                                </Radio>
+                                <Radio key="0" value="0">
                                   ไม่ใช่
-                                </Option>
-                              </Select>
+                                </Radio>
+                              </Radio.Group>
                             </Form.Item>
                           </Col>
                           <Col span={24}>
@@ -441,21 +418,14 @@ export const FormVitalSign = ({
                               label="อาเจียนตลอด"
                               rules={[{ required: true }]}
                             >
-                              <Select
-                                onFocus={() => {
-                                  setNextField(null);
-                                }}
-                              >
-                                <Option key="" value="">
-                                  ต้องเลือก 1 ค่า
-                                </Option>
-                                <Option key="1" value="1">
+                              <Radio.Group>
+                                <Radio key="1" value="1">
                                   ใช่
-                                </Option>
-                                <Option key="0" value="0">
+                                </Radio>
+                                <Radio key="0" value="0">
                                   ไม่ใช่
-                                </Option>
-                              </Select>
+                                </Radio>
+                              </Radio.Group>
                             </Form.Item>
                           </Col>
                         </Row>
@@ -463,7 +433,8 @@ export const FormVitalSign = ({
                     )}
                 </Card>
               </Col>
-            )}
+            )
+            }
 
             <Col span={24} style={{ textAlign: 'center' }}>
               {process.env.NEXT_PUBLIC_REQ_GEO === 'false' ? (
@@ -508,6 +479,6 @@ export const FormVitalSign = ({
           </Row>
         );
       }}
-    </Form>
+    </Form >
   );
 };
