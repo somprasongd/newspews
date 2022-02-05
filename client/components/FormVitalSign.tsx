@@ -28,23 +28,11 @@ interface FormVitalSignProps {
 
 const { Option } = Select;
 
-const rangeData = (max: any, min: any) => {
-  if (max && min) {
-    return `${max} - ${min}`;
-  } else if (max && !min) {
-    return `น้อยกว่า ${max}`;
-  } else if (min && !max) {
-    return `มากกว่า ${min}`;
-  } else {
-    return `0`;
-  }
-};
-
 const focusFields = [
   'weight',
   'height',
-  'bp1',
-  'bp2',
+  'sys',
+  'dia',
   'temp',
   'map',
   'pulse',
@@ -77,16 +65,16 @@ export const FormVitalSign = ({
     <Form
       {...layout}
       autoComplete="off"
-      onChange={() => { }}
+      onChange={() => {}}
       initialValues={initialValues}
       onFinish={submit}
     >
       {(values, form) => {
         const handelReset = () => {
-          form.getFieldInstance('ageDate').focus()
-          form.resetFields()
+          form.getFieldInstance('ageDate').focus();
+          form.resetFields();
           setResponse(null);
-        }
+        };
 
         return (
           <Row gutter={[8, 8]}>
@@ -107,36 +95,51 @@ export const FormVitalSign = ({
                       </Col>
                     </Row>
                   </Col>
-                  {values.ageDate && <Col span={24} style={{ textAlign: 'center' }}>
-                    {(() => {
-                      const [year = 0, month = 0, day = 0] = values?.ageDate.split('.')
-                      return <Text strong>{year} ปี {month} เดือน {day} วัน</Text>
-                    })()}
-                  </Col>}
+                  {values.ageDate && (
+                    <Col span={24} style={{ textAlign: 'center' }}>
+                      {(() => {
+                        const [year = 0, month = 0, day = 0] =
+                          values?.ageDate.split('.');
+                        return (
+                          <Text strong>
+                            {year} ปี {month} เดือน {day} วัน
+                          </Text>
+                        );
+                      })()}
+                    </Col>
+                  )}
                 </Row>
               </Card>
             </Col>
 
-            {values.ageDate &&
+            {values.ageDate && (
               <Col>
-                <Card title={values.ageDate && calculateAgeGroup(values.ageDate) === 10 ? 'NEWS' : 'PEWS'}>
+                <Card
+                  title={
+                    values.ageDate && calculateAgeGroup(values.ageDate) === 10
+                      ? 'NEWS'
+                      : 'PEWS'
+                  }
+                  extra={
+                    response !== null && (
+                      <Alert
+                        message={<>{response?.score} คะแนน</>}
+                        type="success"
+                      />
+                    )
+                  }
+                >
                   <Row>
-
-                    {response !== null && (
-                      <Col span={24} style={{ paddingBottom: 12 }}>
-                        <Alert message={<>{response?.type.toUpperCase()} - Score: {response?.score}</>} type="success" />
-                      </Col>
-                    )}
-
                     {values.ageDate &&
                       (calculateAgeGroup(values.ageDate) === 10 ||
-                        (values?.ageDate && values?.ageDate.split('.')?.[0] > 15)) && (
+                        (values?.ageDate &&
+                          values?.ageDate.split('.')?.[0] > 15)) && (
                         <>
                           <Col span={24}>
                             <Form.Item label="ความดัน" shouldUpdate>
                               <Input.Group compact>
                                 <InputTypeNumber
-                                  bp="bp1"
+                                  bp="sys"
                                   name={['bp', 0]}
                                   lengthDecimalBefore={3}
                                   lengthDecimalAfter={0}
@@ -150,14 +153,18 @@ export const FormVitalSign = ({
                                   style={{ width: '50%' }}
                                   rules={[
                                     {
-                                      required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
-                                      pattern: /^(?=.)(?!0*$)(?:(?:(?:0|[1-2]?[0-9]?\d))|300?)$/g,
+                                      required:
+                                        values.ageDate &&
+                                        calculateAgeGroup(values.ageDate) ===
+                                          10,
+                                      pattern:
+                                        /^(?=.)(?!0*$)(?:(?:(?:0|[1-2]?[0-9]?\d))|300?)$/g,
                                       message: `ความดันไม่ถูกต้อง`,
                                     },
                                   ]}
                                 />
                                 <InputTypeNumber
-                                  bp="bp2"
+                                  bp="dia"
                                   name={['bp', 1]}
                                   lengthDecimalBefore={3}
                                   lengthDecimalAfter={0}
@@ -171,8 +178,12 @@ export const FormVitalSign = ({
                                   style={{ width: '50%' }}
                                   rules={[
                                     {
-                                      required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
-                                      pattern: /^(?=.)(?!0*$)(?:(?:(?:0|[1-1]?[0-9]?\d))|200?)$/g,
+                                      required:
+                                        values.ageDate &&
+                                        calculateAgeGroup(values.ageDate) ===
+                                          10,
+                                      pattern:
+                                        /^(?=.)(?!0*$)(?:(?:(?:0|[1-1]?[0-9]?\d))|200?)$/g,
                                       message: `ความดันไม่ถูกต้อง`,
                                     },
                                   ]}
@@ -195,8 +206,11 @@ export const FormVitalSign = ({
                               focusFields={focusFields}
                               rules={[
                                 {
-                                  required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
-                                  pattern: /^(?=.)(?!0*[.,]?0*$)(?:(?:(?:0|[3-4]?\d)?(?:[,.]\d{1,2})?)|50(?:[.,]0?)?)$/g,
+                                  required:
+                                    values.ageDate &&
+                                    calculateAgeGroup(values.ageDate) === 10,
+                                  pattern:
+                                    /^(?=.)(?!0*[.,]?0*$)(?:(?:(?:0|[3-4]?\d)?(?:[,.]\d{1,2})?)|50(?:[.,]0?)?)$/g,
                                   message: `อุณหภูมิไม่ถูกต้อง`,
                                 },
                               ]}
@@ -217,7 +231,9 @@ export const FormVitalSign = ({
                               focusFields={focusFields}
                               rules={[
                                 {
-                                  required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
+                                  required:
+                                    values.ageDate &&
+                                    calculateAgeGroup(values.ageDate) === 10,
                                   pattern: /^\d*\.?\d*$/g,
                                   message: `ชีพจรไม่ถูกต้อง`,
                                 },
@@ -252,7 +268,8 @@ export const FormVitalSign = ({
 
                     {values.ageDate &&
                       (calculateAgeGroup(values.ageDate) === 10 ||
-                        (values?.ageDate && values?.ageDate.split('.')?.[0] > 15)) && (
+                        (values?.ageDate &&
+                          values?.ageDate.split('.')?.[0] > 15)) && (
                         <>
                           <Col span={24}>
                             <InputTypeNumber
@@ -269,7 +286,9 @@ export const FormVitalSign = ({
                               focusFields={focusFields}
                               rules={[
                                 {
-                                  required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
+                                  required:
+                                    values.ageDate &&
+                                    calculateAgeGroup(values.ageDate) === 10,
                                   pattern: /^\d*\.?\d*$/g,
                                   message: `SPO2 ไม่ถูกต้อง`,
                                 },
@@ -305,7 +324,8 @@ export const FormVitalSign = ({
 
                   {values.ageDate &&
                     (calculateAgeGroup(values.ageDate) === 10 ||
-                      (values?.ageDate && values?.ageDate.split('.')?.[0] > 15)) && (
+                      (values?.ageDate &&
+                        values?.ageDate.split('.')?.[0] > 15)) && (
                       <Row gutter={[6, 0]}>
                         <Col span={24}>
                           <Form.Item
@@ -443,7 +463,7 @@ export const FormVitalSign = ({
                     )}
                 </Card>
               </Col>
-            }
+            )}
 
             <Col span={24} style={{ textAlign: 'center' }}>
               {process.env.NEXT_PUBLIC_REQ_GEO === 'false' ? (

@@ -1,11 +1,6 @@
 import { useState } from 'react';
 import { Input, Form } from 'antd';
-import {
-  nutritionCalc,
-  bmiCalc,
-  inchToCm,
-  cmToInch,
-} from '../shared/func'
+import { nutritionCalc, bmiCalc, inchToCm, cmToInch } from '../shared/func';
 
 type props = {
   // name: string,
@@ -68,11 +63,11 @@ export const InputTypeNumber = ({
       nutri =
         e?.target?.value && bmi
           ? nutritionCalc(
-            e?.target?.value,
-            bmi,
-            patientData?.patient?.ptGenderId,
-            patientData?.patient?.ptDob
-          )
+              e?.target?.value,
+              bmi,
+              patientData?.patient?.ptGenderId,
+              patientData?.patient?.ptDob
+            )
           : undefined;
     }
     if (name === 'height') {
@@ -83,11 +78,11 @@ export const InputTypeNumber = ({
       nutri =
         allValues?.weight && bmi
           ? nutritionCalc(
-            allValues?.weight,
-            bmi,
-            patientData?.patient?.ptGenderId,
-            patientData?.patient?.ptDob
-          )
+              allValues?.weight,
+              bmi,
+              patientData?.patient?.ptGenderId,
+              patientData?.patient?.ptDob
+            )
           : undefined;
     }
     if (name !== 'weight' && name !== 'height') {
@@ -113,14 +108,14 @@ export const InputTypeNumber = ({
       if (before && before.length <= lengthDecimalBefore) {
         if (!after || (after && after.length <= lengthDecimalAfter)) {
           setPreValue(e?.target?.value?.replace(pattern, ''));
-          if (bp && bp === 'bp1') {
+          if (bp && bp === 'sys') {
             form.setFieldsValue({
               ...allValues,
               bp: [e?.target?.value?.replace(pattern, ''), allValues?.bp?.[1]],
               bmi,
               nutri,
             });
-          } else if (bp && bp === 'bp2') {
+          } else if (bp && bp === 'dia') {
             form.setFieldsValue({
               ...allValues,
               bp: [allValues?.bp?.[0], e?.target?.value?.replace(pattern, '')],
@@ -175,14 +170,14 @@ export const InputTypeNumber = ({
         } else {
           setPreValue((pre) => pre);
 
-          if (bp && bp === 'bp1') {
+          if (bp && bp === 'sys') {
             form.setFieldsValue({
               ...allValues,
               bp: [preValue, allValues?.bp?.[1]],
               bmi,
               nutri,
             });
-          } else if (bp && bp === 'bp2') {
+          } else if (bp && bp === 'dia') {
             form.setFieldsValue({
               ...allValues,
               bp: [allValues?.bp?.[0], preValue],
@@ -220,14 +215,14 @@ export const InputTypeNumber = ({
       if (after && after.length <= lengthDecimalAfter) {
         if (!before || (before && before.length <= lengthDecimalBefore)) {
           setPreValue(e?.target?.value?.replace(pattern, ''));
-          if (bp && bp === 'bp1') {
+          if (bp && bp === 'sys') {
             form.setFieldsValue({
               ...allValues,
               bp: [e?.target?.value?.replace(pattern, ''), allValues?.bp?.[1]],
               bmi,
               nutri,
             });
-          } else if (bp && bp === 'bp2') {
+          } else if (bp && bp === 'dia') {
             form.setFieldsValue({
               ...allValues,
               bp: [allValues?.bp?.[0], e?.target?.value?.replace(pattern, '')],
@@ -283,14 +278,14 @@ export const InputTypeNumber = ({
           return;
         } else {
           setPreValue((pre) => pre);
-          if (bp && bp === 'bp1') {
+          if (bp && bp === 'sys') {
             form.setFieldsValue({
               ...allValues,
               bp: [preValue, allValues?.bp?.[1]],
               bmi,
               nutri,
             });
-          } else if (bp && bp === 'bp2') {
+          } else if (bp && bp === 'dia') {
             form.setFieldsValue({
               ...allValues,
               bp: [allValues?.bp?.[0], preValue],
@@ -328,14 +323,14 @@ export const InputTypeNumber = ({
     }
     if (e?.target?.value?.length === 0) {
       setPreValue(e?.target?.value);
-      if (bp && bp === 'bp1') {
+      if (bp && bp === 'sys') {
         form.setFieldsValue({
           ...allValues,
           bp: [e?.target?.value?.replace(pattern, ''), allValues?.bp?.[1]],
           bmi,
           nutri,
         });
-      } else if (bp && bp === 'bp2') {
+      } else if (bp && bp === 'dia') {
         form.setFieldsValue({
           ...allValues,
           bp: [allValues?.bp?.[0], e?.target?.value?.replace(pattern, '')],
@@ -372,14 +367,14 @@ export const InputTypeNumber = ({
       }
       return;
     }
-    if (bp && bp === 'bp1') {
+    if (bp && bp === 'sys') {
       form.setFieldsValue({
         ...allValues,
         bp: [preValue, allValues?.bp?.[1]],
         bmi,
         nutri,
       });
-    } else if (bp && bp === 'bp2') {
+    } else if (bp && bp === 'dia') {
       form.setFieldsValue({
         ...allValues,
         bp: [allValues?.bp?.[0], preValue],
@@ -410,7 +405,7 @@ export const InputTypeNumber = ({
         nutri,
       });
     }
-  }
+  };
 
   return (
     <Form.Item name={name} label={label} noStyle={bp} rules={rules}>

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { FormVitalSign } from '../components/FormVitalSign';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
 import { NextPage } from 'next';
 import { geolocated } from 'react-geolocated';
 import { calculateNewsPews } from '../services/calculate';
@@ -11,7 +9,6 @@ const { Content } = Layout;
 const { Title } = Typography;
 
 const Home: NextPage = (props: any) => {
-  const router = useRouter();
   const [crt, setCrt] = useState<any>([
     {
       id: '0',
@@ -72,7 +69,7 @@ const Home: NextPage = (props: any) => {
     receivedNebulization: '',
     behavior: '',
     crt: '',
-    avpu: ''
+    avpu: '',
   });
   const [response, setResponse] = useState<any>(null);
 
