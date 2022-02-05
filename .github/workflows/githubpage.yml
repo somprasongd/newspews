@@ -24,10 +24,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install Dependencies
-        run: cd client&npm ci
+        run: |
+          cd client
+          pwd
+          ls
+          npm ci
 
       - name: Build
-        run: cd client&npm run export
+        run: |
+          cd client
+          pwd
+          ls
+          npm run export
         env:
           BASE_URL: /newspews
           NEXT_PUBLIC_USE_GEO: true
