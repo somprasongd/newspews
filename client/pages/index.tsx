@@ -67,7 +67,13 @@ const Home: NextPage = (props: any) => {
       description: 'ซึม/สับสน/ไม่ค่อยตอบสนองต่อเจ็บ',
     },
   ]);
-  const [initialValues, setInitialValues] = useState<any>(null);
+  const [initialValues, setInitialValues] = useState<any>({
+    vomitting: '',
+    receivedNebulization: '',
+    behavior: '',
+    crt: '',
+    avpu: ''
+  });
   const [response, setResponse] = useState<any>(null);
 
   const onSubmit = async (values: any) => {

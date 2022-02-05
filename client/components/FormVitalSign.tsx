@@ -7,8 +7,8 @@ import {
   Button,
   Card,
   Typography,
+  Alert,
 } from 'antd';
-import dynamic from 'next/dynamic';
 import { InputTypeNumber } from './InputTypeNumber';
 import { calculateAgeGroup } from '../shared/func';
 import { useState } from 'react';
@@ -83,8 +83,8 @@ export const FormVitalSign = ({
     >
       {(values, form) => {
         const handelReset = () => {
-          form.getFieldInstance('ageDate').focus();
-          form.resetFields();
+          form.getFieldInstance('ageDate').focus()
+          form.resetFields()
           setResponse(null);
         }
 
@@ -107,327 +107,344 @@ export const FormVitalSign = ({
                       </Col>
                     </Row>
                   </Col>
+                  {values.ageDate && <Col span={24} style={{ textAlign: 'center' }}>
+                    {(() => {
+                      const [year = 0, month = 0, day = 0] = values?.ageDate.split('.')
+                      return <Text strong>{year} ปี {month} เดือน {day} วัน</Text>
+                    })()}
+                  </Col>}
                 </Row>
               </Card>
             </Col>
 
-            <Col>
-              <Card>
-                <Row>
-                  <Col span={24}>
-                    <Form.Item label="ความดัน" shouldUpdate>
-                      <Input.Group compact>
-                        <InputTypeNumber
-                          bp="bp1"
-                          name={['bp', 0]}
-                          lengthDecimalBefore={3}
-                          lengthDecimalAfter={0}
-                          addonAfter="/"
-                          allValues={values}
-                          form={form}
-                          index={2}
-                          nextField={nextField}
-                          setNextField={setNextField}
-                          focusFields={focusFields}
-                          style={{ width: '50%' }}
-                          rules={[
-                            {
-                              required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
-                              pattern: /^(?=.)(?!0*$)(?:(?:(?:0|[1-2]?[0-9]?\d))|300?)$/g,
-                              message: `ความดันไม่ถูกต้อง`,
-                            },
-                          ]}
-                        />
-                        <InputTypeNumber
-                          bp="bp2"
-                          name={['bp', 1]}
-                          lengthDecimalBefore={3}
-                          lengthDecimalAfter={0}
-                          addonAfter="mmHg"
-                          allValues={values}
-                          form={form}
-                          index={3}
-                          nextField={nextField}
-                          setNextField={setNextField}
-                          focusFields={focusFields}
-                          style={{ width: '50%' }}
-                          rules={[
-                            {
-                              required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
-                              pattern: /^(?=.)(?!0*$)(?:(?:(?:0|[1-1]?[0-9]?\d))|200?)$/g,
-                              message: `ความดันไม่ถูกต้อง`,
-                            },
-                          ]}
-                        />
-                      </Input.Group>
-                    </Form.Item>
-                  </Col>
-                  <Col span={24}>
-                    <InputTypeNumber
-                      name="temp"
-                      label="อุณหภูมิ"
-                      lengthDecimalBefore={2}
-                      lengthDecimalAfter={1}
-                      addonAfter="°C"
-                      allValues={values}
-                      form={form}
-                      index={4}
-                      nextField={nextField}
-                      setNextField={setNextField}
-                      focusFields={focusFields}
-                      rules={[
-                        {
-                          required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
-                          pattern: /^(?=.)(?!0*[.,]?0*$)(?:(?:(?:0|[3-4]?\d)?(?:[,.]\d{1,2})?)|50(?:[.,]0?)?)$/g,
-                          message: `อุณหภูมิไม่ถูกต้อง`,
-                        },
-                      ]}
-                    />
-                  </Col>
-                  <Col span={24}>
-                    <InputTypeNumber
-                      name="pulse"
-                      label="ชีพจร"
-                      lengthDecimalBefore={3}
-                      lengthDecimalAfter={0}
-                      addonAfter="bmp"
-                      allValues={values}
-                      form={form}
-                      index={6}
-                      nextField={nextField}
-                      setNextField={setNextField}
-                      focusFields={focusFields}
-                      rules={[
-                        {
-                          required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
-                          pattern: /^\d*\.?\d*$/g,
-                          message: `ชีพจรไม่ถูกต้อง`,
-                        },
-                      ]}
-                    />
-                  </Col>
-                  <Col span={24}>
-                    <InputTypeNumber
-                      name="rr"
-                      label="การหายใจ"
-                      lengthDecimalBefore={3}
-                      lengthDecimalAfter={0}
-                      addonAfter="bmp"
-                      allValues={values}
-                      form={form}
-                      index={7}
-                      nextField={nextField}
-                      setNextField={setNextField}
-                      focusFields={focusFields}
-                      rules={[
-                        {
-                          required: true,
-                          pattern: /^\d*\.?\d*$/g,
-                          message: `การหายใจไม่ถูกต้อง`,
-                        },
-                      ]}
-                    />
-                  </Col>
-                  <Col span={24}>
-                    <InputTypeNumber
-                      name="spo2"
-                      label="SPO2"
-                      lengthDecimalBefore={3}
-                      lengthDecimalAfter={0}
-                      addonAfter="%"
-                      allValues={values}
-                      form={form}
-                      index={8}
-                      nextField={nextField}
-                      setNextField={setNextField}
-                      focusFields={focusFields}
-                      rules={[
-                        {
-                          required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
-                          pattern: /^\d*\.?\d*$/g,
-                          message: `SPO2 ไม่ถูกต้อง`,
-                        },
-                      ]}
-                    />
-                  </Col>
-                  <Col span={24}>
-                    <InputTypeNumber
-                      name="oxygen"
-                      label="Oxygen"
-                      lengthDecimalBefore={3}
-                      lengthDecimalAfter={0}
-                      addonAfter="L/m"
-                      allValues={values}
-                      form={form}
-                      index={9}
-                      nextField={nextField}
-                      setNextField={setNextField}
-                      focusFields={focusFields}
-                      rules={[
-                        {
-                          required: true,
-                          pattern: /^\d*\.?\d*$/g,
-                          message: `Oxygen ไม่ถูกต้อง`,
-                        },
-                      ]}
-                    />
-                  </Col>
-                </Row>
-                {values.ageDate &&
-                  (calculateAgeGroup(values.ageDate) === 10 ||
-                    (values?.ageDate && values?.ageDate.split('.')?.[0] > 15)) ? (
-                  <Row gutter={[6, 0]}>
+            {values.ageDate &&
+              <Col>
+                <Card title={values.ageDate && calculateAgeGroup(values.ageDate) === 10 ? 'NEWS' : 'PEWS'}>
+                  <Row>
+
+                    {response !== null && (
+                      <Col span={24} style={{ paddingBottom: 12 }}>
+                        <Alert message={<>{response?.type.toUpperCase()} - Score: {response?.score}</>} type="success" />
+                      </Col>
+                    )}
+
+                    {values.ageDate &&
+                      (calculateAgeGroup(values.ageDate) === 10 ||
+                        (values?.ageDate && values?.ageDate.split('.')?.[0] > 15)) && (
+                        <>
+                          <Col span={24}>
+                            <Form.Item label="ความดัน" shouldUpdate>
+                              <Input.Group compact>
+                                <InputTypeNumber
+                                  bp="bp1"
+                                  name={['bp', 0]}
+                                  lengthDecimalBefore={3}
+                                  lengthDecimalAfter={0}
+                                  addonAfter="/"
+                                  allValues={values}
+                                  form={form}
+                                  index={2}
+                                  nextField={nextField}
+                                  setNextField={setNextField}
+                                  focusFields={focusFields}
+                                  style={{ width: '50%' }}
+                                  rules={[
+                                    {
+                                      required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
+                                      pattern: /^(?=.)(?!0*$)(?:(?:(?:0|[1-2]?[0-9]?\d))|300?)$/g,
+                                      message: `ความดันไม่ถูกต้อง`,
+                                    },
+                                  ]}
+                                />
+                                <InputTypeNumber
+                                  bp="bp2"
+                                  name={['bp', 1]}
+                                  lengthDecimalBefore={3}
+                                  lengthDecimalAfter={0}
+                                  addonAfter="mmHg"
+                                  allValues={values}
+                                  form={form}
+                                  index={3}
+                                  nextField={nextField}
+                                  setNextField={setNextField}
+                                  focusFields={focusFields}
+                                  style={{ width: '50%' }}
+                                  rules={[
+                                    {
+                                      required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
+                                      pattern: /^(?=.)(?!0*$)(?:(?:(?:0|[1-1]?[0-9]?\d))|200?)$/g,
+                                      message: `ความดันไม่ถูกต้อง`,
+                                    },
+                                  ]}
+                                />
+                              </Input.Group>
+                            </Form.Item>
+                          </Col>
+                          <Col span={24}>
+                            <InputTypeNumber
+                              name="temp"
+                              label="อุณหภูมิ"
+                              lengthDecimalBefore={2}
+                              lengthDecimalAfter={1}
+                              addonAfter="°C"
+                              allValues={values}
+                              form={form}
+                              index={4}
+                              nextField={nextField}
+                              setNextField={setNextField}
+                              focusFields={focusFields}
+                              rules={[
+                                {
+                                  required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
+                                  pattern: /^(?=.)(?!0*[.,]?0*$)(?:(?:(?:0|[3-4]?\d)?(?:[,.]\d{1,2})?)|50(?:[.,]0?)?)$/g,
+                                  message: `อุณหภูมิไม่ถูกต้อง`,
+                                },
+                              ]}
+                            />
+                          </Col>
+                          <Col span={24}>
+                            <InputTypeNumber
+                              name="pulse"
+                              label="ชีพจร"
+                              lengthDecimalBefore={3}
+                              lengthDecimalAfter={0}
+                              addonAfter="bmp"
+                              allValues={values}
+                              form={form}
+                              index={6}
+                              nextField={nextField}
+                              setNextField={setNextField}
+                              focusFields={focusFields}
+                              rules={[
+                                {
+                                  required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
+                                  pattern: /^\d*\.?\d*$/g,
+                                  message: `ชีพจรไม่ถูกต้อง`,
+                                },
+                              ]}
+                            />
+                          </Col>
+                        </>
+                      )}
+
                     <Col span={24}>
-                      <Form.Item
-                        name="avpu"
-                        label="AVPU"
-                        rules={[{ required: true }]}
-                      >
-                        <Select
-                          defaultValue=""
-                          onFocus={() => {
-                            setNextField(null);
-                          }}
-                        >
-                          <Option key={0} value="">
-                            ต้องเลือก 1 ค่า
-                          </Option>
-                          )
-                          {avpu &&
-                            avpu?.length > 0 &&
-                            avpu?.map((a) => (
-                              <Option key={a?.id} value={a?.id}>
-                                {a?.description}
-                              </Option>
-                            ))}
-                        </Select>
-                      </Form.Item>
+                      <InputTypeNumber
+                        name="rr"
+                        label="การหายใจ"
+                        lengthDecimalBefore={3}
+                        lengthDecimalAfter={0}
+                        addonAfter="bmp"
+                        allValues={values}
+                        form={form}
+                        index={7}
+                        nextField={nextField}
+                        setNextField={setNextField}
+                        focusFields={focusFields}
+                        rules={[
+                          {
+                            required: true,
+                            pattern: /^\d*\.?\d*$/g,
+                            message: `การหายใจไม่ถูกต้อง`,
+                          },
+                        ]}
+                      />
+                    </Col>
+
+                    {values.ageDate &&
+                      (calculateAgeGroup(values.ageDate) === 10 ||
+                        (values?.ageDate && values?.ageDate.split('.')?.[0] > 15)) && (
+                        <>
+                          <Col span={24}>
+                            <InputTypeNumber
+                              name="spo2"
+                              label="SPO2"
+                              lengthDecimalBefore={3}
+                              lengthDecimalAfter={0}
+                              addonAfter="%"
+                              allValues={values}
+                              form={form}
+                              index={8}
+                              nextField={nextField}
+                              setNextField={setNextField}
+                              focusFields={focusFields}
+                              rules={[
+                                {
+                                  required: values.ageDate && calculateAgeGroup(values.ageDate) === 10,
+                                  pattern: /^\d*\.?\d*$/g,
+                                  message: `SPO2 ไม่ถูกต้อง`,
+                                },
+                              ]}
+                            />
+                          </Col>
+                        </>
+                      )}
+
+                    <Col span={24}>
+                      <InputTypeNumber
+                        name="oxygen"
+                        label="Oxygen"
+                        lengthDecimalBefore={3}
+                        lengthDecimalAfter={0}
+                        addonAfter="L/m"
+                        allValues={values}
+                        form={form}
+                        index={9}
+                        nextField={nextField}
+                        setNextField={setNextField}
+                        focusFields={focusFields}
+                        rules={[
+                          {
+                            required: true,
+                            pattern: /^\d*\.?\d*$/g,
+                            message: `Oxygen ไม่ถูกต้อง`,
+                          },
+                        ]}
+                      />
                     </Col>
                   </Row>
-                ) : (
-                  <></>
-                )}
-                {values.ageDate &&
-                  (calculateAgeGroup(values.ageDate) !== 10 ||
-                    (values?.ageDate &&
-                      values?.ageDate.split('.')?.[0] <= 15)) && (
-                    <>
-                      <Row gutter={[6, 0]}>
-                        <Col span={24}>
-                          <Form.Item
-                            name="crt"
-                            label="CRT"
-                            rules={[{ required: true }]}
-                          >
-                            <Select
-                              defaultValue=""
-                              onFocus={() => {
-                                setNextField(null);
-                              }}
-                            >
-                              <Option key={0} value="">
-                                ต้องเลือก 1 ค่า
-                              </Option>
-                              )
-                              {crt &&
-                                crt?.length > 0 &&
-                                crt?.map((c) => (
-                                  <Option key={c?.id} value={c?.id}>
-                                    {c?.description}
-                                  </Option>
-                                ))}
-                            </Select>
-                          </Form.Item>
-                        </Col>
-                        <Col span={24}>
-                          <Form.Item
-                            name="behavior"
-                            label="พฤติกรรม"
-                            rules={[{ required: true }]}
-                          >
-                            <Select
-                              defaultValue=""
-                              onFocus={() => {
-                                setNextField(null);
-                              }}
-                            >
-                              <Option key={0} value="">
-                                ต้องเลือก 1 ค่า
-                              </Option>
-                              )
-                              {behavior &&
-                                behavior?.length > 0 &&
-                                behavior?.map((b) => (
-                                  <Option key={b?.id} value={b?.id}>
-                                    {b?.description}
-                                  </Option>
-                                ))}
-                            </Select>
-                          </Form.Item>
-                        </Col>
-                      </Row>
-                      <Row gutter={[6, 0]}>
-                        <Col span={24}>
-                          <Form.Item
-                            name="receivedNebulization"
-                            label="ได้พ่นยา"
-                            rules={[{ required: true }]}
-                          >
-                            <Select
-                              defaultValue=""
-                              onFocus={() => {
-                                setNextField(null);
-                              }}
-                            >
-                              <Option key="" value="">
-                                ต้องเลือก 1 ค่า{' '}
-                              </Option>
-                              <Option key="1" value="1">
-                                ใช่
-                              </Option>
-                              <Option key="0" value="0">
-                                ไม่ใช่
-                              </Option>
-                            </Select>
-                          </Form.Item>
-                        </Col>
-                        <Col span={24}>
-                          <Form.Item
-                            name="vomitting"
-                            label="อาเจียนตลอด"
-                            rules={[{ required: true }]}
-                          >
-                            <Select
-                              defaultValue=""
-                              onFocus={() => {
-                                setNextField(null);
-                              }}
-                            >
-                              <Option key="" value="">
-                                ต้องเลือก 1 ค่า
-                              </Option>
-                              <Option key="1" value="1">
-                                ใช่
-                              </Option>
-                              <Option key="0" value="0">
-                                ไม่ใช่
-                              </Option>
-                            </Select>
-                          </Form.Item>
-                        </Col>
-                      </Row>
-                    </>
-                  )}
-              </Card>
-            </Col>
 
-            {response !== null && (
-              <Col span={24}>
-                <Card>
-                  {response?.type.toUpperCase()} - Score: {response?.score}
+                  {values.ageDate &&
+                    (calculateAgeGroup(values.ageDate) === 10 ||
+                      (values?.ageDate && values?.ageDate.split('.')?.[0] > 15)) && (
+                      <Row gutter={[6, 0]}>
+                        <Col span={24}>
+                          <Form.Item
+                            name="avpu"
+                            label="AVPU"
+                            rules={[{ required: true }]}
+                          >
+                            <Select
+                              onFocus={() => {
+                                setNextField(null);
+                              }}
+                            >
+                              <Option key={0} value="">
+                                ต้องเลือก 1 ค่า
+                              </Option>
+                              )
+                              {avpu &&
+                                avpu?.length > 0 &&
+                                avpu?.map((a) => (
+                                  <Option key={a?.id} value={a?.id}>
+                                    {a?.description}
+                                  </Option>
+                                ))}
+                            </Select>
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    )}
+                  {values.ageDate &&
+                    (calculateAgeGroup(values.ageDate) !== 10 ||
+                      (values?.ageDate &&
+                        values?.ageDate.split('.')?.[0] <= 15)) && (
+                      <>
+                        <Row gutter={[6, 0]}>
+                          <Col span={24}>
+                            <Form.Item
+                              name="crt"
+                              label="CRT"
+                              rules={[{ required: true }]}
+                            >
+                              <Select
+                                onFocus={() => {
+                                  setNextField(null);
+                                }}
+                              >
+                                <Option key={0} value="">
+                                  ต้องเลือก 1 ค่า
+                                </Option>
+                                )
+                                {crt &&
+                                  crt?.length > 0 &&
+                                  crt?.map((c) => (
+                                    <Option key={c?.id} value={c?.id}>
+                                      {c?.description}
+                                    </Option>
+                                  ))}
+                              </Select>
+                            </Form.Item>
+                          </Col>
+                          <Col span={24}>
+                            <Form.Item
+                              name="behavior"
+                              label="พฤติกรรม"
+                              rules={[{ required: true }]}
+                            >
+                              <Select
+                                onFocus={() => {
+                                  setNextField(null);
+                                }}
+                              >
+                                <Option key={0} value="">
+                                  ต้องเลือก 1 ค่า
+                                </Option>
+                                )
+                                {behavior &&
+                                  behavior?.length > 0 &&
+                                  behavior?.map((b) => (
+                                    <Option key={b?.id} value={b?.id}>
+                                      {b?.description}
+                                    </Option>
+                                  ))}
+                              </Select>
+                            </Form.Item>
+                          </Col>
+                        </Row>
+                        <Row gutter={[6, 0]}>
+                          <Col span={24}>
+                            <Form.Item
+                              name="receivedNebulization"
+                              label="ได้พ่นยา"
+                              rules={[{ required: true }]}
+                            >
+                              <Select
+                                onFocus={() => {
+                                  setNextField(null);
+                                }}
+                              >
+                                <Option key="" value="">
+                                  ต้องเลือก 1 ค่า{' '}
+                                </Option>
+                                <Option key="1" value="1">
+                                  ใช่
+                                </Option>
+                                <Option key="0" value="0">
+                                  ไม่ใช่
+                                </Option>
+                              </Select>
+                            </Form.Item>
+                          </Col>
+                          <Col span={24}>
+                            <Form.Item
+                              name="vomitting"
+                              label="อาเจียนตลอด"
+                              rules={[{ required: true }]}
+                            >
+                              <Select
+                                onFocus={() => {
+                                  setNextField(null);
+                                }}
+                              >
+                                <Option key="" value="">
+                                  ต้องเลือก 1 ค่า
+                                </Option>
+                                <Option key="1" value="1">
+                                  ใช่
+                                </Option>
+                                <Option key="0" value="0">
+                                  ไม่ใช่
+                                </Option>
+                              </Select>
+                            </Form.Item>
+                          </Col>
+                        </Row>
+                      </>
+                    )}
                 </Card>
               </Col>
-            )}
+            }
+
             <Col span={24} style={{ textAlign: 'center' }}>
               {process.env.NEXT_PUBLIC_REQ_GEO === 'false' ? (
                 <>
