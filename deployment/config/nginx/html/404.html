@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<title>Error 404</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap"
+		rel="stylesheet">
+</head>
+
+<style>
+	:root {
+		--main-space: 20px;
+		--main-textColor: #6E6E6E;
+		--contentIconError-size: 120px;
+	}
+
+	body {
+		margin: 0;
+		padding: 0;
+		font-size: 16px;
+		background: #ffffff;
+		background: linear-gradient(145deg, #ffffff 0%, #ffffff 50%, #f9f9f9 50%, #f9f9f9 100%);
+
+
+
+
+	}
+
+	.mainContainer {
+		font-family: 'Kanit', sans-serif;
+		width: 100vw;
+		height: 100vh;
+		min-height: var(--contentIconError-size);
+		min-width: var(--contentIconError-size);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: var(--main-textColor);
+	}
+
+	.contentError {
+		display: flex;
+		padding: var(--main-space);
+	}
+
+	.contentError>* {}
+
+	.contentError .contentError-icon {
+		padding: 10px;
+		border-radius: 100%;
+		height: var(--contentIconError-size);
+		width: var(--contentIconError-size);
+		min-height: var(--contentIconError-size);
+		min-width: var(--contentIconError-size);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+	}
+
+	.contentError .contentError-icon::after {
+		content: '';
+		width: 100%;
+		height: 100%;
+		border: 1px dashed var(--main-textColor);
+		border-radius: 100%;
+		position: absolute;
+		animation: rotating 15s linear infinite;
+	}
+
+	.contentError .contentError-icon .icon {
+		height: 65%;
+	}
+
+	.contentError .contentError-icon svg {
+		height: 100%;
+		animation: colorFade 4s linear infinite;
+	}
+
+	.contentError .contentError-icon svg path {
+		fill: var(--main-textColor);
+	}
+
+	.contentError .contentError-textDetail {
+		line-height: normal;
+		padding-left: var(--main-space);
+	}
+
+	.contentError .contentError-textDetail .errorCode {
+		font-size: 4rem;
+		line-height: 3.5rem;
+		text-shadow: 3px 2px 1px rgb(0 0 0 / 30%);
+	}
+
+	.contentError .contentError-textDetail .errorTitle {
+		font-size: 1.5rem;
+		line-height: normal;
+	}
+
+	.contentError .contentError-textDetail .errorDescriptions {
+		font-size: 1rem;
+		font-weight: 300;
+		line-height: normal;
+		word-break: break-all;
+		word-break: break-word;
+	}
+
+	.contentError .contentError-textDetail .errorDescriptions p {
+		margin: 0;
+		word-break: break-all;
+		word-break: break-word;
+	}
+
+	@keyframes rotating {
+		from {
+			-ms-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-webkit-transform: rotate(0deg);
+			-o-transform: rotate(0deg);
+			transform: rotate(0deg);
+		}
+
+		to {
+			-ms-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-webkit-transform: rotate(360deg);
+			-o-transform: rotate(360deg);
+			transform: rotate(360deg);
+		}
+	}
+
+	@keyframes colorFade {
+		0% {
+			opacity: 1;
+		}
+
+		50% {
+			opacity: .7;
+		}
+
+		100% {
+			opacity: 1;
+		}
+	}
+</style>
+
+<body>
+	<div class="mainContainer">
+		<div class="contentError">
+			<div class="contentError-icon">
+				<div class="icon">
+					<svg xmlns="http://www.w3.org/2000/svg" width="90.55" height="105" viewBox="0 0 90.55 105">
+						<path id="exception"
+							d="M202.468,104.417v-5.78a.966.966,0,0,0-.963-.963H155.266a.966.966,0,0,0-.963.963v5.78a.966.966,0,0,0,.963.963H201.5A.966.966,0,0,0,202.468,104.417Zm-47.2,10.6a.966.966,0,0,0-.963.963v5.78a.966.966,0,0,0,.963.963h22.156a.966.966,0,0,0,.963-.963v-5.78a.966.966,0,0,0-.963-.963Zm45.275,13.968a26.009,26.009,0,1,0,26.009,26.009A26.008,26.008,0,0,0,200.541,128.982Zm12.944,38.954a18.314,18.314,0,1,1,5.358-12.944A18.189,18.189,0,0,1,213.486,167.935Zm-16.8-3.311a3.853,3.853,0,1,0,3.853-3.853A3.853,3.853,0,0,0,196.688,164.624Zm1.445-7.706h4.817a.966.966,0,0,0,.963-.963V142.468a.966.966,0,0,0-.963-.963h-4.817a.966.966,0,0,0-.963.963v13.486A.966.966,0,0,0,198.133,156.917ZM172.605,169.44H144.67V84.67H212.1v41.422a.966.966,0,0,0,.963.963h6.743a.966.966,0,0,0,.963-.963V79.853A3.849,3.849,0,0,0,216.917,76H139.853A3.849,3.849,0,0,0,136,79.853v94.4a3.849,3.849,0,0,0,3.853,3.853h32.752a.966.966,0,0,0,.963-.963V170.4A.966.966,0,0,0,172.605,169.44Z"
+							transform="translate(-136 -76)" fill="#6e6e6e" />
+					</svg>
+				</div>
+			</div>
+			<div class="contentError-textDetail">
+				<div class="errorCode">404</div>
+				<div class="errorTitle">Page Not Found !</div>
+				<div class="errorDescriptions">
+					<p>The page you are looking for might have been removed had its name</p>
+					<p>Changed or is temporarily unavailable.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
