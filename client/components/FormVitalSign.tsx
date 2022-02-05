@@ -9,7 +9,7 @@ import {
   Typography,
   Alert,
   Radio,
-  Space
+  Space,
 } from 'antd';
 import { InputTypeNumber } from './InputTypeNumber';
 import { calculateAgeGroup } from '../shared/func';
@@ -67,7 +67,7 @@ export const FormVitalSign = ({
     <Form
       {...layout}
       autoComplete="off"
-      onChange={() => { }}
+      onChange={() => {}}
       initialValues={initialValues}
       onFinish={submit}
     >
@@ -158,7 +158,7 @@ export const FormVitalSign = ({
                                       required:
                                         values.ageDate &&
                                         calculateAgeGroup(values.ageDate) ===
-                                        10,
+                                          10,
                                       pattern:
                                         /^(?=.)(?!0*$)(?:(?:(?:0|[1-2]?[0-9]?\d))|300?)$/g,
                                       message: `ความดันไม่ถูกต้อง`,
@@ -183,7 +183,7 @@ export const FormVitalSign = ({
                                       required:
                                         values.ageDate &&
                                         calculateAgeGroup(values.ageDate) ===
-                                        10,
+                                          10,
                                       pattern:
                                         /^(?=.)(?!0*$)(?:(?:(?:0|[1-1]?[0-9]?\d))|200?)$/g,
                                       message: `ความดันไม่ถูกต้อง`,
@@ -335,14 +335,14 @@ export const FormVitalSign = ({
                             label="AVPU"
                             rules={[{ required: true }]}
                           >
-                            <Radio.Group>
+                            <Radio.Group buttonStyle="solid">
                               <Space direction="vertical">
                                 {avpu &&
                                   avpu?.length > 0 &&
                                   avpu?.map((a) => (
-                                    <Radio key={a?.id} value={a?.id}>
+                                    <Radio.Button key={a?.id} value={a?.id}>
                                       {a?.description}
-                                    </Radio>
+                                    </Radio.Button>
                                   ))}
                               </Space>
                             </Radio.Group>
@@ -362,14 +362,14 @@ export const FormVitalSign = ({
                               label="CRT"
                               rules={[{ required: true }]}
                             >
-                              <Radio.Group>
+                              <Radio.Group buttonStyle="solid">
                                 <Space direction="vertical">
                                   {crt &&
                                     crt?.length > 0 &&
                                     crt?.map((c) => (
-                                      <Radio key={c?.id} value={c?.id}>
+                                      <Radio.Button key={c?.id} value={c?.id}>
                                         {c?.description}
-                                      </Radio>
+                                      </Radio.Button>
                                     ))}
                                 </Space>
                               </Radio.Group>
@@ -381,14 +381,14 @@ export const FormVitalSign = ({
                               label="พฤติกรรม"
                               rules={[{ required: true }]}
                             >
-                              <Radio.Group>
+                              <Radio.Group buttonStyle="solid">
                                 <Space direction="vertical">
                                   {behavior &&
                                     behavior?.length > 0 &&
                                     behavior?.map((b) => (
-                                      <Radio key={b?.id} value={b?.id}>
+                                      <Radio.Button key={b?.id} value={b?.id}>
                                         {b?.description}
-                                      </Radio>
+                                      </Radio.Button>
                                     ))}
                                 </Space>
                               </Radio.Group>
@@ -402,13 +402,13 @@ export const FormVitalSign = ({
                               label="ได้พ่นยา"
                               rules={[{ required: true }]}
                             >
-                              <Radio.Group>
-                                <Radio key="1" value="1">
+                              <Radio.Group buttonStyle="solid">
+                                <Radio.Button key="1" value="1">
                                   ใช่
-                                </Radio>
-                                <Radio key="0" value="0">
+                                </Radio.Button>
+                                <Radio.Button key="0" value="0">
                                   ไม่ใช่
-                                </Radio>
+                                </Radio.Button>
                               </Radio.Group>
                             </Form.Item>
                           </Col>
@@ -418,13 +418,13 @@ export const FormVitalSign = ({
                               label="อาเจียนตลอด"
                               rules={[{ required: true }]}
                             >
-                              <Radio.Group>
-                                <Radio key="1" value="1">
+                              <Radio.Group buttonStyle="solid">
+                                <Radio.Button key="1" value="1">
                                   ใช่
-                                </Radio>
-                                <Radio key="0" value="0">
+                                </Radio.Button>
+                                <Radio.Button key="0" value="0">
                                   ไม่ใช่
-                                </Radio>
+                                </Radio.Button>
                               </Radio.Group>
                             </Form.Item>
                           </Col>
@@ -433,8 +433,7 @@ export const FormVitalSign = ({
                     )}
                 </Card>
               </Col>
-            )
-            }
+            )}
 
             <Col span={24} style={{ textAlign: 'center' }}>
               {process.env.NEXT_PUBLIC_REQ_GEO === 'false' ? (
@@ -479,6 +478,6 @@ export const FormVitalSign = ({
           </Row>
         );
       }}
-    </Form >
+    </Form>
   );
 };
