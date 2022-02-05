@@ -26,16 +26,14 @@ jobs:
       - name: Install Dependencies
         run: |
           cd client
-          pwd
-          ls
           npm ci
 
       - name: Build
         run: |
           cd client
-          pwd
-          ls
+          npm run build
           npm run export
+          ls
         env:
           BASE_URL: /newspews
           NEXT_PUBLIC_USE_GEO: true
