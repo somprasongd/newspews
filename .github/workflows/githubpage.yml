@@ -3,7 +3,7 @@ name: github pages
 on:
   push:
     branches:
-      - ghp
+      - master
 
 jobs:
   build-deploy:
@@ -33,7 +33,8 @@ jobs:
           cd client
           npm run build
           npm run export
-          ls
+          touch ./out/.nojekyll
+          touch ./out/_next/.nojekyll
         env:
           BASE_URL: /newspews
           NEXT_PUBLIC_USE_GEO: true
