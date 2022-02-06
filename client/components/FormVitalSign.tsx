@@ -9,11 +9,7 @@ import {
   Typography,
   Alert,
   Radio,
-<<<<<<< HEAD
-  Space,
-=======
   Space
->>>>>>> e273f2a (radio)
 } from 'antd';
 import { InputTypeNumber } from './InputTypeNumber';
 import { calculateAgeGroup } from '../shared/func';
@@ -222,33 +218,31 @@ export const FormVitalSign = ({
                               ]}
                             />
                           </Col>
-                          <Col span={24}>
-                            <InputTypeNumber
-                              name="pulse"
-                              label="ชีพจร"
-                              lengthDecimalBefore={3}
-                              lengthDecimalAfter={0}
-                              addonAfter="bmp"
-                              allValues={values}
-                              form={form}
-                              index={6}
-                              nextField={nextField}
-                              setNextField={setNextField}
-                              focusFields={focusFields}
-                              rules={[
-                                {
-                                  required:
-                                    values.ageDate &&
-                                    calculateAgeGroup(values.ageDate) === 10,
-                                  pattern: /^\d*\.?\d*$/g,
-                                  message: `ชีพจรไม่ถูกต้อง`,
-                                },
-                              ]}
-                            />
-                          </Col>
                         </>
                       )}
 
+                    <Col span={24}>
+                      <InputTypeNumber
+                        name="pulse"
+                        label="ชีพจร"
+                        lengthDecimalBefore={3}
+                        lengthDecimalAfter={0}
+                        addonAfter="bmp"
+                        allValues={values}
+                        form={form}
+                        index={6}
+                        nextField={nextField}
+                        setNextField={setNextField}
+                        focusFields={focusFields}
+                        rules={[
+                          {
+                            required: true,
+                            pattern: /^\d*\.?\d*$/g,
+                            message: `ชีพจรไม่ถูกต้อง`,
+                          },
+                        ]}
+                      />
+                    </Col>
                     <Col span={24}>
                       <InputTypeNumber
                         name="rr"
