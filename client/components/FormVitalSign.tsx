@@ -9,7 +9,11 @@ import {
   Typography,
   Alert,
   Radio,
+<<<<<<< HEAD
   Space,
+=======
+  Space
+>>>>>>> e273f2a (radio)
 } from 'antd';
 import { InputTypeNumber } from './InputTypeNumber';
 import { calculateAgeGroup } from '../shared/func';
@@ -67,7 +71,7 @@ export const FormVitalSign = ({
     <Form
       {...layout}
       autoComplete="off"
-      onChange={() => {}}
+      onChange={() => { }}
       initialValues={initialValues}
       onFinish={submit}
     >
@@ -158,7 +162,7 @@ export const FormVitalSign = ({
                                       required:
                                         values.ageDate &&
                                         calculateAgeGroup(values.ageDate) ===
-                                          10,
+                                        10,
                                       pattern:
                                         /^(?=.)(?!0*$)(?:(?:(?:0|[1-2]?[0-9]?\d))|300?)$/g,
                                       message: `ความดันไม่ถูกต้อง`,
@@ -183,7 +187,7 @@ export const FormVitalSign = ({
                                       required:
                                         values.ageDate &&
                                         calculateAgeGroup(values.ageDate) ===
-                                          10,
+                                        10,
                                       pattern:
                                         /^(?=.)(?!0*$)(?:(?:(?:0|[1-1]?[0-9]?\d))|200?)$/g,
                                       message: `ความดันไม่ถูกต้อง`,
@@ -433,7 +437,8 @@ export const FormVitalSign = ({
                     )}
                 </Card>
               </Col>
-            )}
+            )
+            }
 
             <Col span={24} style={{ textAlign: 'center' }}>
               {process.env.NEXT_PUBLIC_REQ_GEO === 'false' ? (
@@ -478,6 +483,6 @@ export const FormVitalSign = ({
           </Row>
         );
       }}
-    </Form>
+    </Form >
   );
 };
