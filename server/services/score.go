@@ -9,21 +9,22 @@ import (
 type newsInput struct {
 	Rr       uint    `validate:"gte=0"`
 	Hr       uint    `validate:"gte=0"`
-	O2       uint    `validate:"gte=0"`
 	Temp     float32 `validate:"gte=0"`
 	Sys      uint    `validate:"gte=0"`
 	Dia      uint    `validate:"-"`
+	O2       uint    `validate:"gte=0"`
 	Spo2     uint    `validate:"gte=0"`
 	AvpuCode string  `validate:"number,oneof='0' '1' '2' '3'"`
 }
 
 type pewsInput struct {
+	Rr           uint   `validate:"gte=0"`
+	Hr           uint   `validate:"gte=0"`
+	O2           uint   `validate:"gte=0"`
 	BehaviorCode string `validate:"number,oneof='0' '1' '2' '3'"`
 	CrtCode      string `validate:"number,oneof='0' '1' '2' '3'"`
 	NebulizeCode string `validate:"number,oneof='0' '1'"`
 	VomitingCode string `validate:"number,oneof='0' '1'"`
-	Rr           uint   `validate:"gte=0"`
-	O2           uint   `validate:"gte=0"`
 }
 
 type ScoreService interface {
@@ -47,7 +48,7 @@ func (s scoreService) CalculateScore(input dto.InputDTO) (*dto.ScoreResponse, *e
 	}
 
 	// first get age group
-	ageGroup := calculateAgeGroup(input.Age)
+	ageGroup := calculateAgeGroup(input.Age.Year, input.Age.Month, input.Age.Day)
 
 	// ageGroup เท่ากับ 10 จะเป็น NEWS ถ้าไม่ใช่จะเป็น PEWS
 	scoreRes := &dto.ScoreResponse{}
@@ -78,6 +79,7 @@ func (s scoreService) CalculateScore(input dto.InputDTO) (*dto.ScoreResponse, *e
 			VomitingCode: input.VomitingCode,
 			CrtCode:      input.CrtCode,
 			Rr:           input.Rr,
+			Hr:           input.Hr,
 			O2:           input.O2,
 		}
 		score, err := calculatePewsScore(ageGroup, pews)
@@ -93,30 +95,31 @@ func (s scoreService) CalculateScore(input dto.InputDTO) (*dto.ScoreResponse, *e
 	return scoreRes, nil
 }
 
-func calculateAgeGroup(age dto.Age) uint {
-	if age.Year == 0 {
-		if age.Month == 0 {
-			if age.Day <= 3 {
+func calculateAgeGroup(year, month, day uint) uint {
+	switch {
+	case year == 0:
+		switch {
+		case month == 0:
+			if day <= 3 { // แรกเกิด - 96 ชม.
 				return 1
-			} else {
-				return 2
 			}
-		} else if age.Month == 1 {
+			return 2 // 4 วัน - 1 เดือน
+		case month == 1:
 			return 3
-		} else {
+		default:
 			return 4
 		}
-	} else if age.Year <= 2 {
+	case year <= 2:
 		return 5
-	} else if age.Year <= 5 {
+	case year <= 5:
 		return 6
-	} else if age.Year <= 7 {
+	case year <= 7:
 		return 7
-	} else if age.Year <= 9 {
+	case year <= 9:
 		return 8
-	} else if age.Year <= 15 {
+	case year <= 15:
 		return 9
-	} else {
+	default:
 		return 10
 	}
 }
@@ -153,11 +156,12 @@ func calculatePewsScore(ageGroup uint, input pewsInput) (uint, error) {
 	nebulizeScore := calculateNebulizeScore(input.NebulizeCode)
 	vomitingScore := calculateVomitingScore(input.VomitingCode)
 
+	hrScore := calculateHRScore(ageGroup, input.Hr)
 	rrScore := calculateRRScore(ageGroup, input.Rr)
 	o2supScore := calculateO2supScore(ageGroup, input.O2)
 	respiScore := calculateRespiScore(rrScore, o2supScore)
 
-	score := behaviorScore + nebulizeScore + vomitingScore + cardioScore + respiScore
+	score := behaviorScore + nebulizeScore + vomitingScore + cardioScore + respiScore + hrScore
 
 	return score, nil
 }
@@ -192,10 +196,10 @@ func calculateRRScore(ageGroup uint, rr uint) uint {
 			return 3
 		} else if rr < rrMidu {
 			return 0
-		} else if rr <= rrMax {
-			return 2
+		} else if rr < rrMax {
+			return 1
 		} else {
-			return 3
+			return 2
 		}
 	}
 }
@@ -229,14 +233,14 @@ func calculateHRScore(ageGroup uint, hr uint) uint {
 			return 3
 		}
 	} else {
-		if hr < hrMidl {
+		if hr < hrMidl { // < HRMIN
 			return 3
-		} else if hr < hrMidu {
-			return 0
-		} else if hr <= hrMax {
+		} else if hr > hrMidu+30 { // > HRMAX+30
+			return 3
+		} else if hr > hrMidu+20 { //> HRMAX+20
 			return 2
 		} else {
-			return 3
+			return 0
 		}
 	}
 }
