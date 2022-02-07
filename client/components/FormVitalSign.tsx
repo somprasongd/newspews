@@ -9,7 +9,7 @@ import {
   Typography,
   Alert,
   Radio,
-  Space,
+  Space
 } from 'antd';
 import { InputTypeNumber } from './InputTypeNumber';
 import { calculateAgeGroup } from '../shared/func';
@@ -67,7 +67,7 @@ export const FormVitalSign = ({
     <Form
       {...layout}
       autoComplete="off"
-      onChange={() => {}}
+      onChange={() => { }}
       initialValues={initialValues}
       onFinish={submit}
     >
@@ -158,7 +158,7 @@ export const FormVitalSign = ({
                                       required:
                                         values.ageDate &&
                                         calculateAgeGroup(values.ageDate) ===
-                                          10,
+                                        10,
                                       pattern:
                                         /^(?=.)(?!0*$)(?:(?:(?:0|[1-2]?[0-9]?\d))|300?)$/g,
                                       message: `ความดันไม่ถูกต้อง`,
@@ -183,7 +183,7 @@ export const FormVitalSign = ({
                                       required:
                                         values.ageDate &&
                                         calculateAgeGroup(values.ageDate) ===
-                                          10,
+                                        10,
                                       pattern:
                                         /^(?=.)(?!0*$)(?:(?:(?:0|[1-1]?[0-9]?\d))|200?)$/g,
                                       message: `ความดันไม่ถูกต้อง`,
@@ -218,33 +218,31 @@ export const FormVitalSign = ({
                               ]}
                             />
                           </Col>
-                          <Col span={24}>
-                            <InputTypeNumber
-                              name="pulse"
-                              label="ชีพจร"
-                              lengthDecimalBefore={3}
-                              lengthDecimalAfter={0}
-                              addonAfter="bmp"
-                              allValues={values}
-                              form={form}
-                              index={6}
-                              nextField={nextField}
-                              setNextField={setNextField}
-                              focusFields={focusFields}
-                              rules={[
-                                {
-                                  required:
-                                    values.ageDate &&
-                                    calculateAgeGroup(values.ageDate) === 10,
-                                  pattern: /^\d*\.?\d*$/g,
-                                  message: `ชีพจรไม่ถูกต้อง`,
-                                },
-                              ]}
-                            />
-                          </Col>
                         </>
                       )}
 
+                    <Col span={24}>
+                      <InputTypeNumber
+                        name="pulse"
+                        label="ชีพจร"
+                        lengthDecimalBefore={3}
+                        lengthDecimalAfter={0}
+                        addonAfter="bmp"
+                        allValues={values}
+                        form={form}
+                        index={6}
+                        nextField={nextField}
+                        setNextField={setNextField}
+                        focusFields={focusFields}
+                        rules={[
+                          {
+                            required: true,
+                            pattern: /^\d*\.?\d*$/g,
+                            message: `ชีพจรไม่ถูกต้อง`,
+                          },
+                        ]}
+                      />
+                    </Col>
                     <Col span={24}>
                       <InputTypeNumber
                         name="rr"
@@ -433,7 +431,8 @@ export const FormVitalSign = ({
                     )}
                 </Card>
               </Col>
-            )}
+            )
+            }
 
             <Col span={24} style={{ textAlign: 'center' }}>
               {process.env.NEXT_PUBLIC_REQ_GEO === 'false' ? (
@@ -478,6 +477,6 @@ export const FormVitalSign = ({
           </Row>
         );
       }}
-    </Form>
+    </Form >
   );
 };
