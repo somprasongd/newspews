@@ -106,7 +106,6 @@ const Home: NextPage = (props: any) => {
           },
         };
       }
-      console.log(data);
       const res = await calculateNewsPews(data);
 
       setResponse(res);

@@ -10,25 +10,25 @@ import {
   Alert,
   Radio,
   Space
-} from 'antd';
-import { InputTypeNumber } from './InputTypeNumber';
-import { calculateAgeGroup } from '../shared/func';
-import { useState } from 'react';
-import { InputTypeAge } from './InputTypeAge';
-const { Text } = Typography;
+} from 'antd'
+import { InputTypeNumber } from './InputTypeNumber'
+import { calculateAgeGroup } from '../shared/func'
+import { useState } from 'react'
+import { InputTypeAge } from './InputTypeAge'
+const { Text } = Typography
 
 interface FormVitalSignProps {
-  submit?: (values: any) => void;
-  crt: any[] | null;
-  avpu: any[] | null;
-  behavior: any[] | null;
-  initialValues?: any;
-  deleteVitalSign?: any;
-  setResponse?: any;
-  response?: any;
+  submit?: (values: any) => void
+  crt: any[] | null
+  avpu: any[] | null
+  behavior: any[] | null
+  initialValues?: any
+  deleteVitalSign?: any
+  setResponse?: any
+  response?: any
 }
 
-const { Option } = Select;
+const { Option } = Select
 
 const focusFields = [
   'weight',
@@ -44,7 +44,7 @@ const focusFields = [
   'waistline',
   'hips',
   'chest',
-];
+]
 
 export const FormVitalSign = ({
   submit,
@@ -56,12 +56,34 @@ export const FormVitalSign = ({
   setResponse,
   response,
 }: FormVitalSignProps) => {
-  const [nextField, setNextField] = useState<any>(0);
+  const [nextField, setNextField] = useState<any>(0)
+  const [form] = Form.useForm()
 
   const layout = {
     labelCol: { span: 6 },
-    wrapperCol: { span: 14 },
-  };
+    wrapperCol: { span: 14 }
+  }
+
+  const handelReset = () => {
+    form.getFieldInstance('ageDate').focus()
+    form.resetFields()
+    setResponse(null)
+  }
+
+  const handleEnterAge = (event: any) => {
+    if (event.key === 'Enter' || event.keyCode == 13) {
+      event.preventDefault()
+      if (form.getFieldInstance(['bp', '0']))
+        form.getFieldInstance(['bp', '0'])?.focus()
+      else if (form.getFieldInstance(['pulse']))
+        form.getFieldInstance(['pulse'])?.focus()
+      return false
+    }
+    if (response !== null) {
+      form.resetFields()
+      setResponse(null)
+    }
+  }
 
   return (
     <Form
@@ -70,13 +92,9 @@ export const FormVitalSign = ({
       onChange={() => { }}
       initialValues={initialValues}
       onFinish={submit}
+      form={form}
     >
-      {(values, form) => {
-        const handelReset = () => {
-          form.getFieldInstance('ageDate').focus();
-          form.resetFields();
-          setResponse(null);
-        };
+      {(values) => {
 
         return (
           <Row gutter={[8, 8]}>
@@ -87,6 +105,7 @@ export const FormVitalSign = ({
                     <Row gutter={[8, 8]}>
                       <Col span={24}>
                         <InputTypeAge
+                          handleEnterAge={handleEnterAge}
                           allValues={values}
                           form={form}
                           addonAfter="ปี.เดือน.วัน"
@@ -101,12 +120,12 @@ export const FormVitalSign = ({
                     <Col span={24} style={{ textAlign: 'center' }}>
                       {(() => {
                         const [year = 0, month = 0, day = 0] =
-                          values?.ageDate.split('.');
+                          values?.ageDate.split('.')
                         return (
                           <Text strong>
                             {year} ปี {month} เดือน {day} วัน
                           </Text>
-                        );
+                        )
                       })()}
                     </Col>
                   )}
@@ -471,12 +490,12 @@ export const FormVitalSign = ({
                 htmlType="button"
                 onClick={handelReset}
               >
-                ล้าง
+                เริ่มใหม่
               </Button>
             </Col>
           </Row>
-        );
+        )
       }}
     </Form >
-  );
-};
+  )
+}
