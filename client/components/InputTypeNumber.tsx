@@ -3,11 +3,9 @@ import { Input, Form } from 'antd';
 import { nutritionCalc, bmiCalc, inchToCm, cmToInch } from '../shared/func';
 
 type props = {
-  // name: string,
   lengthDecimalBefore: number;
   lengthDecimalAfter: number;
   addonAfter?: any;
-  // onChange?: any,
   refx?: any;
   onFocus?: any;
   name: any;
@@ -47,7 +45,7 @@ export const InputTypeNumber = ({
   style,
   disabled,
   inch,
-  cm,
+  cm
 }: props) => {
   const [preValue, setPreValue] = useState('');
 
@@ -63,11 +61,11 @@ export const InputTypeNumber = ({
       nutri =
         e?.target?.value && bmi
           ? nutritionCalc(
-              e?.target?.value,
-              bmi,
-              patientData?.patient?.ptGenderId,
-              patientData?.patient?.ptDob
-            )
+            e?.target?.value,
+            bmi,
+            patientData?.patient?.ptGenderId,
+            patientData?.patient?.ptDob
+          )
           : undefined;
     }
     if (name === 'height') {
@@ -78,11 +76,11 @@ export const InputTypeNumber = ({
       nutri =
         allValues?.weight && bmi
           ? nutritionCalc(
-              allValues?.weight,
-              bmi,
-              patientData?.patient?.ptGenderId,
-              patientData?.patient?.ptDob
-            )
+            allValues?.weight,
+            bmi,
+            patientData?.patient?.ptGenderId,
+            patientData?.patient?.ptDob
+          )
           : undefined;
     }
     if (name !== 'weight' && name !== 'height') {
@@ -153,19 +151,23 @@ export const InputTypeNumber = ({
           if (
             before &&
             after &&
-            ((before?.length === 1 && after?.length === lengthDecimalAfter) ||
+            (((before?.length === 1 && after?.length === lengthDecimalAfter) ||
               (before?.length === 2 && after?.length === lengthDecimalAfter) ||
               (before?.length === lengthDecimalBefore &&
-                after?.length === lengthDecimalAfter))
+                after?.length === lengthDecimalAfter)))
           ) {
             setNextField(index + 1);
           }
-          if (
+          if ((
             lengthDecimalAfter === 0 &&
-            before?.length === lengthDecimalBefore
+            before?.length === lengthDecimalBefore)
           ) {
             setNextField(index + 1);
           }
+          if (focusFields[focusFields.length] === 'oxygen') {
+            setNextField(0);
+          }
+
           return;
         } else {
           setPreValue((pre) => pre);
@@ -408,7 +410,7 @@ export const InputTypeNumber = ({
   };
 
   return (
-    <Form.Item name={name} label={label} noStyle={bp} rules={rules}>
+    <Form.Item name={name} label={label} noStyle={bp} rules={rules} >
       <Input
         value={preValue}
         disabled={disabled}

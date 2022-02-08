@@ -134,18 +134,6 @@ const Home: NextPage = (props: any) => {
             setResponse={setResponse}
             response={response}
           />
-
-          {/* <DrawerComfirm
-          visible={openDrawer?.open}
-          okText='ยืนยัน'
-          closeText='ยกเลิก'
-          onOk={async () => {
-            // await createVS(openDrawer?.submit)
-            setOpenDrawer({ open: false, data: {}, submit: {} })
-          }}
-          onCancel={() => { setOpenDrawer({ open: false, data: {}, submit: {} }) }}>
-          <ChooseConfirmNewsPews data={openDrawer?.data} />
-        </DrawerComfirm> */}
         </Row>
       </Content>
     </Layout>
