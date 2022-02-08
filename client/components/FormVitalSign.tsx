@@ -490,10 +490,5 @@ export const FormVitalSign = ({
         )
       }}
     </Form >
-<<<<<<< HEAD
   );
 };
-=======
-  )
-}
->>>>>>> 6e3aceb525b38e22e22787f2fa1e5be49d3d0fd4
