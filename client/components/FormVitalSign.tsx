@@ -3,19 +3,18 @@ import {
   Row,
   Col,
   Input,
-  Select,
   Button,
   Card,
   Typography,
   Alert,
   Radio,
   Space
-} from 'antd'
-import { InputTypeNumber } from './InputTypeNumber'
-import { calculateAgeGroup } from '../shared/func'
-import { useState } from 'react'
-import { InputTypeAge } from './InputTypeAge'
-const { Text } = Typography
+} from 'antd';
+import { InputTypeNumber } from './InputTypeNumber';
+import { calculateAgeGroup } from '../shared/func';
+import { useState } from 'react';
+import { InputTypeAge } from './InputTypeAge';
+const { Text } = Typography;
 
 interface FormVitalSignProps {
   submit?: (values: any) => void
@@ -28,8 +27,6 @@ interface FormVitalSignProps {
   response?: any
 }
 
-const { Option } = Select
-
 const focusFields = [
   'weight',
   'height',
@@ -40,10 +37,7 @@ const focusFields = [
   'pulse',
   'rr',
   'spo2',
-  'oxygen',
-  'waistline',
-  'hips',
-  'chest',
+  'oxygen'
 ]
 
 export const FormVitalSign = ({
@@ -68,9 +62,11 @@ export const FormVitalSign = ({
     form.getFieldInstance('ageDate').focus()
     form.resetFields()
     setResponse(null)
+    setNextField(0)
   }
 
   const handleEnterAge = (event: any) => {
+    setNextField(0)
     if (event.key === 'Enter' || event.keyCode == 13) {
       event.preventDefault()
       if (form.getFieldInstance(['bp', '0']))
@@ -158,7 +154,7 @@ export const FormVitalSign = ({
                         <>
                           <Col span={24}>
                             <Form.Item label="ความดัน" shouldUpdate>
-                              <Input.Group compact>
+                              <Input.Group compact className='bp'>
                                 <InputTypeNumber
                                   bp="sys"
                                   name={['bp', 0]}
@@ -171,7 +167,6 @@ export const FormVitalSign = ({
                                   nextField={nextField}
                                   setNextField={setNextField}
                                   focusFields={focusFields}
-                                  style={{ width: '50%' }}
                                   rules={[
                                     {
                                       required:
@@ -196,7 +191,6 @@ export const FormVitalSign = ({
                                   nextField={nextField}
                                   setNextField={setNextField}
                                   focusFields={focusFields}
-                                  style={{ width: '50%' }}
                                   rules={[
                                     {
                                       required:
@@ -497,5 +491,5 @@ export const FormVitalSign = ({
         )
       }}
     </Form >
-  )
-}
+  );
+};
