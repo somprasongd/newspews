@@ -11,6 +11,7 @@ type props = {
   bp?: any;
   style?: any;
   disabled?: any;
+  handleEnterAge: (...args: any[]) => any
 };
 
 export const InputTypeAge = ({
@@ -21,7 +22,8 @@ export const InputTypeAge = ({
   form,
   bp,
   style,
-  disabled
+  disabled,
+  handleEnterAge
 }: props) => {
   const [preValue, setPreValue] = useState('');
 
@@ -35,6 +37,8 @@ export const InputTypeAge = ({
     return;
   }
 
+
+
   return (
     <Form.Item name={name} label={label} noStyle={bp} rules={[{
       required: true,
@@ -42,6 +46,7 @@ export const InputTypeAge = ({
       pattern: new RegExp(/^(\d{1,2}\.){1,2}\d{1,2}/g),
     }]} >
       <Input
+        onKeyDown={handleEnterAge}
         value={preValue}
         disabled={disabled}
         addonAfter={addonAfter}
