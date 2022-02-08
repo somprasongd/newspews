@@ -10,12 +10,12 @@ import {
   Alert,
   Radio,
   Space
-} from 'antd'
-import { InputTypeNumber } from './InputTypeNumber'
-import { calculateAgeGroup } from '../shared/func'
-import { useState } from 'react'
-import { InputTypeAge } from './InputTypeAge'
-const { Text } = Typography
+} from 'antd';
+import { InputTypeNumber } from './InputTypeNumber';
+import { calculateAgeGroup } from '../shared/func';
+import { useState } from 'react';
+import { InputTypeAge } from './InputTypeAge';
+const { Text } = Typography;
 
 interface FormVitalSignProps {
   submit?: (values: any) => void
