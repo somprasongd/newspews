@@ -66,6 +66,7 @@ export const FormVitalSign = ({
   }
 
   const handleEnterAge = (event: any) => {
+    setNextField(0)
     if (event.key === 'Enter' || event.keyCode == 13) {
       event.preventDefault()
       if (form.getFieldInstance(['bp', '0']))

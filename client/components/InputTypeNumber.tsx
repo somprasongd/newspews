@@ -151,19 +151,23 @@ export const InputTypeNumber = ({
           if (
             before &&
             after &&
-            ((before?.length === 1 && after?.length === lengthDecimalAfter) ||
+            (((before?.length === 1 && after?.length === lengthDecimalAfter) ||
               (before?.length === 2 && after?.length === lengthDecimalAfter) ||
               (before?.length === lengthDecimalBefore &&
-                after?.length === lengthDecimalAfter))
+                after?.length === lengthDecimalAfter)))
           ) {
             setNextField(index + 1);
           }
-          if (
+          if ((
             lengthDecimalAfter === 0 &&
-            before?.length === lengthDecimalBefore
+            before?.length === lengthDecimalBefore)
           ) {
             setNextField(index + 1);
           }
+          if (focusFields[focusFields.length] === 'oxygen') {
+            setNextField(0);
+          }
+
           return;
         } else {
           setPreValue((pre) => pre);
