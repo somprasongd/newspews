@@ -28,8 +28,6 @@ interface FormVitalSignProps {
   response?: any
 }
 
-const { Option } = Select
-
 const focusFields = [
   'weight',
   'height',
@@ -40,10 +38,7 @@ const focusFields = [
   'pulse',
   'rr',
   'spo2',
-  'oxygen',
-  'waistline',
-  'hips',
-  'chest',
+  'oxygen'
 ]
 
 export const FormVitalSign = ({
@@ -68,6 +63,7 @@ export const FormVitalSign = ({
     form.getFieldInstance('ageDate').focus()
     form.resetFields()
     setResponse(null)
+    setNextField(0)
   }
 
   const handleEnterAge = (event: any) => {
@@ -158,7 +154,7 @@ export const FormVitalSign = ({
                         <>
                           <Col span={24}>
                             <Form.Item label="ความดัน" shouldUpdate>
-                              <Input.Group compact>
+                              <Input.Group compact className='bp'>
                                 <InputTypeNumber
                                   bp="sys"
                                   name={['bp', 0]}
@@ -171,7 +167,6 @@ export const FormVitalSign = ({
                                   nextField={nextField}
                                   setNextField={setNextField}
                                   focusFields={focusFields}
-                                  style={{ width: '50%' }}
                                   rules={[
                                     {
                                       required:
@@ -196,7 +191,6 @@ export const FormVitalSign = ({
                                   nextField={nextField}
                                   setNextField={setNextField}
                                   focusFields={focusFields}
-                                  style={{ width: '50%' }}
                                   rules={[
                                     {
                                       required:
