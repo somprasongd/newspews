@@ -23,9 +23,9 @@ jobs:
 
       - name: Build WASM
         run: |
-          cd server/cmd/wasm
-          GOOS=js GOARCH=wasm go build -o ../../../client/public/newspews.wasm
-          cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" ../../../client/public/
+          cd wasm
+          GOOS=js GOARCH=wasm go build -o ../client/public/newspews.wasm
+          cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" ../client/public/
 
       - name: Cache dependencies
         uses: actions/cache@v2
