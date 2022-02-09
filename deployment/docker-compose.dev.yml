@@ -1,5 +1,0 @@
-version: '2.4'
-services:
-  newspews-database:
-    ports:
-      - '5433:5432'
