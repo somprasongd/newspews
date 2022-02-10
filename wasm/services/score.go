@@ -21,9 +21,9 @@ type InputDTO struct {
 }
 
 type Age struct {
-	Year  uint `json:"year"`
-	Month uint `json:"month"`
-	Day   uint `json:"day"`
+	Year  uint `json:"year" validate:"gte=0"`
+	Month uint `json:"month" validate:"gte=0"`
+	Day   uint `json:"day" validate:"gte=0,required_if=Year 0 Month 0"`
 }
 
 type ScoreResponse struct {
@@ -32,24 +32,24 @@ type ScoreResponse struct {
 }
 
 type newsInput struct {
-	Rr       uint    `validate:"gte=0"`
-	Hr       uint    `validate:"gte=0"`
-	Temp     float32 `validate:"gte=0"`
-	Sys      uint    `validate:"gte=0"`
+	Rr       uint    `validate:"gte=0,required"`
+	Hr       uint    `validate:"gte=0,required"`
+	Temp     float32 `validate:"gte=0,required"`
+	Sys      uint    `validate:"gte=0,required"`
 	Dia      uint    `validate:"-"`
-	O2       uint    `validate:"gte=0"`
-	Spo2     uint    `validate:"gte=0"`
-	AvpuCode string  `validate:"number,oneof='0' '1' '2' '3'"`
+	O2       uint    `validate:"gte=0,required"`
+	Spo2     uint    `validate:"gte=0,required"`
+	AvpuCode string  `validate:"number,oneof='0' '1' '2' '3',required"`
 }
 
 type pewsInput struct {
-	Rr           uint   `validate:"gte=0"`
-	Hr           uint   `validate:"gte=0"`
-	O2           uint   `validate:"gte=0"`
-	BehaviorCode string `validate:"number,oneof='0' '1' '2' '3'"`
-	CrtCode      string `validate:"number,oneof='0' '1' '2' '3'"`
-	NebulizeCode string `validate:"number,oneof='0' '1'"`
-	VomitingCode string `validate:"number,oneof='0' '1'"`
+	Rr           uint   `validate:"gte=0,required"`
+	Hr           uint   `validate:"gte=0,required"`
+	O2           uint   `validate:"gte=0,required"`
+	BehaviorCode string `validate:"number,oneof='0' '1' '2' '3',required"`
+	CrtCode      string `validate:"number,oneof='0' '1' '2' '3',required"`
+	NebulizeCode string `validate:"number,oneof='0' '1',required"`
+	VomitingCode string `validate:"number,oneof='0' '1',required"`
 }
 
 type ScoreService interface {
