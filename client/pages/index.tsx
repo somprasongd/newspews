@@ -123,7 +123,7 @@ const Home: NextPage = (props: any) => {
       >
         <Row>
           <Col span={24} style={{ textAlign: 'center' }}>
-            <Title level={2}>Early Warning Sign Calculator [NEWS/PEWS]</Title>
+            <Title level={4}>Early Warning Sign Calculator [NEWS/PEWS]</Title>
           </Col>
           <FormVitalSign
             initialValues={initialValues}

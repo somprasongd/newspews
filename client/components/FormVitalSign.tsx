@@ -161,7 +161,7 @@ export const FormVitalSign = ({
                           values?.ageDate.split('.')?.[0] > 15)) && (
                         <>
                           <Col span={24}>
-                            <Form.Item label="ความดัน" shouldUpdate>
+                            <Form.Item label="ความดันโลหิต" shouldUpdate>
                               <Input.Group compact className="bp">
                                 <InputTypeNumber
                                   bp="sys"
@@ -295,7 +295,7 @@ export const FormVitalSign = ({
                           <Col span={24}>
                             <InputTypeNumber
                               name="spo2"
-                              label="SPO2"
+                              label="O2sat"
                               lengthDecimalBefore={3}
                               lengthDecimalAfter={0}
                               addonAfter="%"
@@ -311,7 +311,7 @@ export const FormVitalSign = ({
                                     values.ageDate &&
                                     calculateAgeGroup(values.ageDate) === 10,
                                   pattern: /^\d*\.?\d*$/g,
-                                  message: `SPO2 ไม่ถูกต้อง`,
+                                  message: `O2sat ไม่ถูกต้อง`,
                                 },
                               ]}
                             />
@@ -322,7 +322,7 @@ export const FormVitalSign = ({
                     <Col span={24}>
                       <InputTypeNumber
                         name="oxygen"
-                        label="Oxygen"
+                        label="ใช้ออกซิเจน"
                         lengthDecimalBefore={3}
                         lengthDecimalAfter={0}
                         addonAfter="L/m"
@@ -336,7 +336,7 @@ export const FormVitalSign = ({
                           {
                             required: true,
                             pattern: /^\d*\.?\d*$/g,
-                            message: `Oxygen ไม่ถูกต้อง`,
+                            message: `ใช้ออกซิเจน ไม่ถูกต้อง`,
                           },
                         ]}
                       />
@@ -351,7 +351,7 @@ export const FormVitalSign = ({
                         <Col span={24}>
                           <Form.Item
                             name="avpu"
-                            label="AVPU"
+                            label="ระดับความรู้สึกตัว(AVPU)"
                             rules={[{ required: true }]}
                           >
                             <Radio.Group buttonStyle="solid">
@@ -378,7 +378,7 @@ export const FormVitalSign = ({
                           <Col span={24}>
                             <Form.Item
                               name="crt"
-                              label="CRT"
+                              label="Cap. Refill Time"
                               rules={[{ required: true }]}
                             >
                               <Radio.Group buttonStyle="solid">
@@ -418,7 +418,7 @@ export const FormVitalSign = ({
                           <Col span={24}>
                             <Form.Item
                               name="receivedNebulization"
-                              label="ได้พ่นยา"
+                              label="พ่นยาทุก 15 นาที"
                               rules={[{ required: true }]}
                             >
                               <Radio.Group buttonStyle="solid">
@@ -434,7 +434,7 @@ export const FormVitalSign = ({
                           <Col span={24}>
                             <Form.Item
                               name="vomitting"
-                              label="อาเจียนตลอด"
+                              label="อาเจียนตลอดหลังผ่าตัด"
                               rules={[{ required: true }]}
                             >
                               <Radio.Group buttonStyle="solid">
@@ -480,7 +480,7 @@ export const FormVitalSign = ({
                       .length > 0
                   }
                 >
-                  คำนวน
+                  คำนวนคะแนน
                 </Button>
               )}
             </Col>
