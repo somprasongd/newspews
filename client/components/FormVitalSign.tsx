@@ -8,7 +8,7 @@ import {
   Typography,
   Alert,
   Radio,
-  Space
+  Space,
 } from 'antd';
 import { InputTypeNumber } from './InputTypeNumber';
 import { calculateAgeGroup } from '../shared/func';
@@ -17,14 +17,14 @@ import { InputTypeAge } from './InputTypeAge';
 const { Text } = Typography;
 
 interface FormVitalSignProps {
-  submit?: (values: any) => void
-  crt: any[] | null
-  avpu: any[] | null
-  behavior: any[] | null
-  initialValues?: any
-  deleteVitalSign?: any
-  setResponse?: any
-  response?: any
+  submit?: (values: any) => void;
+  crt: any[] | null;
+  avpu: any[] | null;
+  behavior: any[] | null;
+  initialValues?: any;
+  deleteVitalSign?: any;
+  setResponse?: any;
+  response?: any;
 }
 
 const focusFields = [
@@ -37,8 +37,8 @@ const focusFields = [
   'pulse',
   'rr',
   'spo2',
-  'oxygen'
-]
+  'oxygen',
+];
 
 export const FormVitalSign = ({
   submit,
@@ -50,52 +50,56 @@ export const FormVitalSign = ({
   setResponse,
   response,
 }: FormVitalSignProps) => {
-  const [nextField, setNextField] = useState<any>(0)
-  const [form] = Form.useForm()
+  const [nextField, setNextField] = useState<any>(0);
+  const [form] = Form.useForm();
 
   const layout = {
     labelCol: { span: 6 },
-    wrapperCol: { span: 14 }
-  }
+    wrapperCol: { span: 14 },
+  };
 
   const handelReset = () => {
-    form.getFieldInstance('ageDate').focus()
-    form.resetFields()
-    setResponse(null)
-    setNextField(0)
-  }
+    form.getFieldInstance('ageDate').focus();
+    form.resetFields();
+    setResponse(null);
+    setNextField(0);
+  };
 
   const handleEnterAge = (event: any) => {
-    setNextField(0)
+    setNextField(0);
     if (event.key === 'Enter' || event.keyCode == 13) {
-      event.preventDefault()
+      event.preventDefault();
       if (form.getFieldInstance(['bp', '0']))
-        form.getFieldInstance(['bp', '0'])?.focus()
+        form.getFieldInstance(['bp', '0'])?.focus();
       else if (form.getFieldInstance(['pulse']))
-        form.getFieldInstance(['pulse'])?.focus()
-      return false
+        form.getFieldInstance(['pulse'])?.focus();
+      return false;
     }
     if (response !== null) {
-      form.resetFields()
-      setResponse(null)
+      form.resetFields();
+      setResponse(null);
     }
-  }
+  };
 
   return (
     <Form
       {...layout}
       autoComplete="off"
-      onChange={() => { }}
+      onChange={() => {}}
       initialValues={initialValues}
       onFinish={submit}
       form={form}
     >
       {(values) => {
-
         return (
           <Row gutter={[8, 8]}>
             <Col span={24}>
-              <Card>
+              <Card
+                style={{
+                  borderRadius: '15px',
+                  overflow: 'hidden',
+                }}
+              >
                 <Row gutter={[6, 0]}>
                   <Col span={24}>
                     <Row gutter={[8, 8]}>
@@ -116,12 +120,12 @@ export const FormVitalSign = ({
                     <Col span={24} style={{ textAlign: 'center' }}>
                       {(() => {
                         const [year = 0, month = 0, day = 0] =
-                          values?.ageDate.split('.')
+                          values?.ageDate.split('.');
                         return (
                           <Text strong>
                             {year} ปี {month} เดือน {day} วัน
                           </Text>
-                        )
+                        );
                       })()}
                     </Col>
                   )}
@@ -132,6 +136,10 @@ export const FormVitalSign = ({
             {values.ageDate && (
               <Col>
                 <Card
+                  style={{
+                    borderRadius: '15px',
+                    overflow: 'hidden',
+                  }}
                   title={
                     values.ageDate && calculateAgeGroup(values.ageDate) === 10
                       ? 'NEWS'
@@ -154,7 +162,7 @@ export const FormVitalSign = ({
                         <>
                           <Col span={24}>
                             <Form.Item label="ความดัน" shouldUpdate>
-                              <Input.Group compact className='bp'>
+                              <Input.Group compact className="bp">
                                 <InputTypeNumber
                                   bp="sys"
                                   name={['bp', 0]}
@@ -172,7 +180,7 @@ export const FormVitalSign = ({
                                       required:
                                         values.ageDate &&
                                         calculateAgeGroup(values.ageDate) ===
-                                        10,
+                                          10,
                                       pattern:
                                         /^(?=.)(?!0*$)(?:(?:(?:0|[1-2]?[0-9]?\d))|300?)$/g,
                                       message: `ความดันไม่ถูกต้อง`,
@@ -196,7 +204,7 @@ export const FormVitalSign = ({
                                       required:
                                         values.ageDate &&
                                         calculateAgeGroup(values.ageDate) ===
-                                        10,
+                                          10,
                                       pattern:
                                         /^(?=.)(?!0*$)(?:(?:(?:0|[1-1]?[0-9]?\d))|200?)$/g,
                                       message: `ความดันไม่ถูกต้อง`,
@@ -321,7 +329,7 @@ export const FormVitalSign = ({
                         allValues={values}
                         form={form}
                         index={9}
-                        nextField={nextField}
+                        nextField={0}
                         setNextField={setNextField}
                         focusFields={focusFields}
                         rules={[
@@ -444,8 +452,7 @@ export const FormVitalSign = ({
                     )}
                 </Card>
               </Col>
-            )
-            }
+            )}
 
             <Col span={24} style={{ textAlign: 'center' }}>
               {process.env.NEXT_PUBLIC_REQ_GEO === 'false' ? (
@@ -477,7 +484,7 @@ export const FormVitalSign = ({
                 </Button>
               )}
             </Col>
-            <Col span={deleteVitalSign ? 12 : 24}>
+            <Col span={24}>
               <Button
                 block
                 shape="round"
@@ -488,8 +495,8 @@ export const FormVitalSign = ({
               </Button>
             </Col>
           </Row>
-        )
+        );
       }}
-    </Form >
+    </Form>
   );
 };
