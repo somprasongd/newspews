@@ -32,20 +32,20 @@ type ScoreResponse struct {
 }
 
 type newsInput struct {
-	Rr       uint    `validate:"gte=0,required"`
-	Hr       uint    `validate:"gte=0,required"`
-	Temp     float32 `validate:"gte=0,required"`
-	Sys      uint    `validate:"gte=0,required"`
+	Rr       uint    `validate:"number,gte=0"`
+	Hr       uint    `validate:"number,gte=0"`
+	Temp     float32 `validate:"number,gte=0"`
+	Sys      uint    `validate:"number,gte=0"`
 	Dia      uint    `validate:"-"`
-	O2       uint    `validate:"gte=0,required"`
-	Spo2     uint    `validate:"gte=0,required"`
+	O2       uint    `validate:"number,gte=0"`
+	Spo2     uint    `validate:"number,gte=0"`
 	AvpuCode string  `validate:"number,oneof='0' '1' '2' '3',required"`
 }
 
 type pewsInput struct {
-	Rr           uint   `validate:"gte=0,required"`
-	Hr           uint   `validate:"gte=0,required"`
-	O2           uint   `validate:"gte=0,required"`
+	Rr           uint   `validate:"number,gte=0"`
+	Hr           uint   `validate:"number,gte=0"`
+	O2           uint   `validate:"number,gte=0"`
 	BehaviorCode string `validate:"number,oneof='0' '1' '2' '3',required"`
 	CrtCode      string `validate:"number,oneof='0' '1' '2' '3',required"`
 	NebulizeCode string `validate:"number,oneof='0' '1',required"`
