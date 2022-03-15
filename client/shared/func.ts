@@ -52,7 +52,7 @@ export const calculateAgeGroup = (values: any) => {
       return 7;
     } else if (year <= 9) {
       return 8;
-    } else if (year <= 15) {
+    } else if (year < 15) {
       return 9;
     } else {
       return 10;

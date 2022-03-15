@@ -158,7 +158,7 @@ export const FormVitalSign = ({
                     {values.ageDate &&
                       (calculateAgeGroup(values.ageDate) === 10 ||
                         (values?.ageDate &&
-                          values?.ageDate.split('.')?.[0] > 15)) && (
+                          values?.ageDate.split('.')?.[0] >= 15)) && (
                         <>
                           <Col span={24}>
                             <Form.Item label="ความดันโลหิต" shouldUpdate>
@@ -290,7 +290,7 @@ export const FormVitalSign = ({
                     {values.ageDate &&
                       (calculateAgeGroup(values.ageDate) === 10 ||
                         (values?.ageDate &&
-                          values?.ageDate.split('.')?.[0] > 15)) && (
+                          values?.ageDate.split('.')?.[0] >= 15)) && (
                         <>
                           <Col span={24}>
                             <InputTypeNumber
@@ -346,7 +346,7 @@ export const FormVitalSign = ({
                   {values.ageDate &&
                     (calculateAgeGroup(values.ageDate) === 10 ||
                       (values?.ageDate &&
-                        values?.ageDate.split('.')?.[0] > 15)) && (
+                        values?.ageDate.split('.')?.[0] >= 15)) && (
                       <Row gutter={[6, 0]}>
                         <Col span={24}>
                           <Form.Item
@@ -372,7 +372,7 @@ export const FormVitalSign = ({
                   {values.ageDate &&
                     (calculateAgeGroup(values.ageDate) !== 10 ||
                       (values?.ageDate &&
-                        values?.ageDate.split('.')?.[0] <= 15)) && (
+                        values?.ageDate.split('.')?.[0] < 15)) && (
                       <>
                         <Row gutter={[6, 0]}>
                           <Col span={24}>

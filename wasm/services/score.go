@@ -138,7 +138,7 @@ func calculateAgeGroup(year, month, day uint) uint {
 		return 7
 	case year <= 9:
 		return 8
-	case year <= 15:
+	case year < 15:
 		return 9
 	default:
 		return 10
