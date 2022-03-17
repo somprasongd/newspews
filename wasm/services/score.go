@@ -22,8 +22,8 @@ type InputDTO struct {
 
 type Age struct {
 	Year  uint `json:"year" validate:"gte=0"`
-	Month uint `json:"month" validate:"gte=0"`
-	Day   uint `json:"day" validate:"gte=0,required_if=Year 0 Month 0"`
+	Month uint `json:"month" validate:"gte=0,lte=11"`
+	Day   uint `json:"day" validate:"gte=0,lte=31,required_if=Year 0 Month 0"`
 }
 
 type ScoreResponse struct {
@@ -32,20 +32,20 @@ type ScoreResponse struct {
 }
 
 type newsInput struct {
-	Rr       uint    `validate:"number,gte=0"`
-	Hr       uint    `validate:"number,gte=0"`
-	Temp     float32 `validate:"number,gte=0"`
-	Sys      uint    `validate:"number,gte=0"`
-	Dia      uint    `validate:"-"`
-	O2       uint    `validate:"number,gte=0"`
-	Spo2     uint    `validate:"number,gte=0"`
+	Rr       uint    `validate:"number,gte=0,lt=200"`
+	Hr       uint    `validate:"number,gte=0,lt=600"`
+	Temp     float32 `validate:"number,gte=0,lt=50"`
+	Sys      uint    `validate:"number,gte=0,lt=400"`
+	Dia      uint    `validate:"number,gte=0,lt=250"`
+	O2       uint    `validate:"number,gte=0,lte=150"`
+	Spo2     uint    `validate:"number,gte=0,lte=100"`
 	AvpuCode string  `validate:"number,oneof='0' '1' '2' '3',required"`
 }
 
 type pewsInput struct {
-	Rr           uint   `validate:"number,gte=0"`
-	Hr           uint   `validate:"number,gte=0"`
-	O2           uint   `validate:"number,gte=0"`
+	Rr           uint   `validate:"number,gte=0,lt=200"`
+	Hr           uint   `validate:"number,gte=0,lt=600"`
+	O2           uint   `validate:"number,gte=0,lte=150"`
 	BehaviorCode string `validate:"number,oneof='0' '1' '2' '3',required"`
 	CrtCode      string `validate:"number,oneof='0' '1' '2' '3',required"`
 	NebulizeCode string `validate:"number,oneof='0' '1',required"`
