@@ -55,8 +55,6 @@ func calWrapper() js.Func {
 			return result
 		}
 
-		fmt.Println(dto)
-
 		resp, err := scoreSrv.CalculateScore(dto)
 		if err != nil {
 			result := map[string]interface{}{
@@ -75,6 +73,7 @@ func calWrapper() js.Func {
 			}
 			return result
 		}
+		fmt.Printf("response %s\n", string(json))
 		return string(json)
 	})
 	return jsonFunc

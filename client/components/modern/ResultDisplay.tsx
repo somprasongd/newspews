@@ -1,5 +1,5 @@
-import { Card, Typography, Space, Tag, Button as AntButton } from 'antd';
-import { CheckCircleOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Button as AntButton, Card, Space, Tag, Typography } from 'antd';
 
 const { Title, Text } = Typography;
 
@@ -25,15 +25,40 @@ const ModernButton = ({ children, ...props }: ModernButtonProps) => {
 
 interface ResultDisplayProps {
   score: number;
+  type: string;
+  level: string;
+  action: string;
   onReset: () => void;
 }
 
-export const ResultDisplay = ({ score, onReset }: ResultDisplayProps) => {
-  // Determine risk level based on score
+export const ResultDisplay = ({ score, type, level, action, onReset }: ResultDisplayProps) => {
+  // Determine risk level based on level from response
   const getRiskLevel = () => {
-    if (score >= 5) return { level: 'สูง', color: 'red' };
-    if (score >= 3) return { level: 'ปานกลาง', color: 'orange' };
-    return { level: 'ต่ำ', color: 'green' };
+    switch (level) {
+      case 'สูง':
+      case 'High':
+        return { level: 'สูง', color: 'red' };
+      case 'เตือนแดงเดี่ยว':
+      case 'Single Red':
+        return { level: 'เตือนแดงเดี่ยว', color: 'red' };
+      case 'ฉุกเฉิน':
+      case 'Emergency':
+        return { level: 'ฉุกเฉิน', color: 'red' };
+      case 'สูง/ฉุกเฉิน':
+      case 'High/Emergency':
+        return { level: 'สูง/ฉุกเฉิน', color: 'red' };
+      case 'ปานกลาง':
+      case 'Medium':
+        return { level: 'ปานกลาง', color: 'orange' };
+      case 'ต่ำ':
+      case 'Low':
+        return { level: 'ต่ำ', color: 'green' };
+      case 'ต่ำมาก':
+      case 'Very Low':
+        return { level: 'ต่ำมาก', color: 'green' };
+      default:
+        return { level: 'ไม่ทราบ', color: 'default' };
+    }
   };
 
   const risk = getRiskLevel();
@@ -59,6 +84,11 @@ export const ResultDisplay = ({ score, onReset }: ResultDisplayProps) => {
             ผลการประเมิน
           </Title>
           <Text type="secondary">Early Warning Sign Calculator</Text>
+          {type && (
+            <Text style={{ display: 'block', fontSize: 12, textTransform: 'uppercase', marginTop: 4 }}>
+              {type}
+            </Text>
+          )}
         </div>
         
         <div>
@@ -86,6 +116,22 @@ export const ResultDisplay = ({ score, onReset }: ResultDisplayProps) => {
             {risk.level}
           </Tag>
         </div>
+
+        {action && (
+          <div style={{ 
+            backgroundColor: '#fffbe6', 
+            border: '1px solid #ffe58f', 
+            borderRadius: 8, 
+            padding: '12px 16px',
+            textAlign: 'left'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
+              <ExclamationCircleOutlined style={{ color: '#faad14', fontSize: 18, marginRight: 8 }} />
+              <Text strong style={{ fontSize: 16 }}>คำแนะนำ:</Text>
+            </div>
+            <Text>{action}</Text>
+          </div>
+        )}
         
         <div>
           <Text type="secondary">

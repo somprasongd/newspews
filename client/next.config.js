@@ -8,6 +8,7 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  output: 'export', // Enable static export
 };
 
 if (process.env.BASE_URL) {
