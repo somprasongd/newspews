@@ -1,5 +1,34 @@
 # Commit Summary
 
+## chore(client): remove unused legacy components (c1a1ee7)
+
+* Removed unused legacy components that were replaced by modern implementations
+* Deleted files:
+  * CardPatientDetail.tsx
+  * ChooseConfirmNewsPews.tsx
+  * Datepicker.tsx
+  * FormVitalSign.tsx
+  * InputTypeAge.tsx
+  * InputTypeNumber.tsx
+* Cleaned up codebase by removing obsolete files
+
+### Detailed Changes
+
+#### chore(client): remove unused components
+
+* Removed `client/components/CardPatientDetail.tsx` - not used in current implementation
+* Removed `client/components/ChooseConfirmNewsPews.tsx` - not used in current implementation
+* Removed `client/components/Datepicker.tsx` - not used in current implementation
+* Removed `client/components/FormVitalSign.tsx` - replaced by modern implementation
+* Removed `client/components/InputTypeAge.tsx` - functionality moved to modern components
+* Removed `client/components/InputTypeNumber.tsx` - replaced by modern implementation
+
+### Commit Statistics
+
+* Commit ID: c1a1ee7
+* 6 files changed
+* 1091 deletions(-)
+
 ## feat(client): enhance UI/UX with modern responsive design and update age group calculation (24c2447)
 
 * Created modern responsive UI components for better user experience
