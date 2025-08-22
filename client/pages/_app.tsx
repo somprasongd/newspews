@@ -2,9 +2,7 @@ import type { AppProps } from 'next/app';
 
 import { ConfigProvider } from 'antd';
 import th from 'antd/lib/locale/th_TH';
-import locale from 'antd/lib/date-picker/locale/th_TH';
 import '../styles/style.css';
-import 'antd/dist/antd.css';
 
 import dayjs from 'dayjs';
 import updateLocale from 'dayjs/plugin/updateLocale';
@@ -34,15 +32,29 @@ dayjs.updateLocale('th', {
     yy: '%d ปี',
   },
 });
-const yearFormat = 'BBBB';
-locale.lang.yearFormat = yearFormat;
 dayjs.extend(buddhistEra);
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ConfigProvider locale={th}>
+    <ConfigProvider 
+      locale={th}
+      theme={{
+        token: {
+          colorPrimary: '#1890ff',
+          borderRadius: 8,
+        },
+        components: {
+          Button: {
+            borderRadius: 8,
+          },
+          Card: {
+            borderRadiusLG: 12,
+          },
+        },
+      }}
+    >
       {typeof window === 'undefined' ? null : (
         <MetaHeader title="Early Warning Sign Calculator [NEWS/PEWS]" />
       )}
