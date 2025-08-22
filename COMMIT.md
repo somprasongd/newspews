@@ -1,5 +1,39 @@
 # Commit Summary
 
+## fix(client): improve age input validation to prevent invalid month/day values (0a6beeb)
+
+* Enhanced age input validation to prevent users from entering invalid month (0-11) and day (0-31) values
+* Added real-time validation in ModernInputNumber component for age format
+* Improved validation logic in VitalSignForm to validate month and day parts as they are typed
+* Prevented submission of forms with invalid age values
+* Added visual error messages for age validation errors
+* Fixed issue where users could enter values like "15.14.50" which are invalid
+
+### Detailed Changes
+
+#### fix(client): enhance ModernInputNumber component
+
+* Added real-time validation for age format inputs
+* Prevented typing of invalid month values (must be 0-11)
+* Prevented typing of invalid day values (must be 0-31)
+* Added validation logic to check each part of the age input as it's being typed
+* Implemented proper handling of partial inputs (e.g., preventing "1" followed by a digit > 1 for months)
+
+#### fix(client): improve VitalSignForm validation
+
+* Added real-time validation for age input in the form
+* Implemented validation to check month and day values as they are entered
+* Prevented the form from displaying the rest of the fields when there's an age validation error
+* Added visual error messages to inform users of invalid age inputs
+* Ensured form submission is blocked when there are age validation errors
+
+### Commit Statistics
+
+* Commit ID: 0a6beeb
+* 2 files changed
+* 131 insertions(+)
+* 8 deletions(-)
+
 ## chore(client): remove unused legacy components (c1a1ee7)
 
 * Removed unused legacy components that were replaced by modern implementations

@@ -1,9 +1,9 @@
-import { Col, Form, Row, Typography } from 'antd';
-import { useState } from 'react';
-import { ModernButton } from './Button';
+import { Form, Row, Col, Typography, Alert } from 'antd';
 import { Card } from './Card';
 import { ModernInputNumber } from './InputNumber';
 import { ModernRadioGroup } from './RadioGroup';
+import { ModernButton } from './Button';
+import { useState } from 'react';
 
 const { Title, Text } = Typography;
 
@@ -35,14 +35,43 @@ export const VitalSignForm = ({
 }: VitalSignFormProps) => {
   const [form] = Form.useForm();
   const [ageGroup, setAgeGroup] = useState<number | null>(null);
+  const [ageValidationError, setAgeValidationError] = useState<string | null>(null);
+  
+  const handleAgeValidationError = (error: string | null) => {
+    setAgeValidationError(error);
+  };
   
   const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     form.setFieldsValue({ ageDate: value });
     
-    // Calculate age group
+    // Clear any previous validation error
+    setAgeValidationError(null);
+    
+    // Validate age format in real-time
     if (value) {
-      const [year = 0] = value.split('.').map(Number);
+      const parts = value.split('.');
+      
+      // Validate month (second part) - must be 0-11
+      if (parts.length >= 2) {
+        const month = parseInt(parts[1], 10);
+        if (!isNaN(month) && month > 11) {
+          setAgeValidationError('เดือนต้องอยู่ระหว่าง 0-11');
+          return;
+        }
+      }
+      
+      // Validate day (third part) - must be 0-31
+      if (parts.length >= 3) {
+        const day = parseInt(parts[2], 10);
+        if (!isNaN(day) && day > 31) {
+          setAgeValidationError('วันต้องอยู่ระหว่าง 0-31');
+          return;
+        }
+      }
+      
+      // Calculate age group only if no validation errors
+      const year = parts[0] ? parseInt(parts[0], 10) : 0;
       let group;
       if (year === 0) {
         group = 1;
@@ -67,12 +96,20 @@ export const VitalSignForm = ({
   
   const isAdult = ageGroup === 10;
   const isChild = ageGroup !== null && ageGroup !== 10;
+  
+  const onFinish = (values: any) => {
+    // Don't submit if there's an age validation error
+    if (ageValidationError) {
+      return;
+    }
+    onSubmit(values);
+  };
 
   return (
     <Form
       form={form}
       initialValues={initialValues}
-      onFinish={onSubmit}
+      onFinish={onFinish}
       layout="vertical"
       style={{ maxWidth: 500, margin: '0 auto' }}
     >
@@ -86,12 +123,23 @@ export const VitalSignForm = ({
             >
               <ModernInputNumber
                 placeholder="เช่น 25.0.0"
+                allowAgeFormat={true}
+                onAgeValidationError={handleAgeValidationError}
                 onChange={handleAgeChange}
                 style={{ width: '100%' }}
               />
             </Form.Item>
             
-            {ageGroup !== null && (
+            {ageValidationError && (
+              <Alert 
+                message={ageValidationError} 
+                type="error" 
+                showIcon 
+                style={{ marginBottom: 16 }} 
+              />
+            )}
+            
+            {ageGroup !== null && !ageValidationError && (
               <div style={{ textAlign: 'center', marginBottom: 16 }}>
                 <Text strong>
                   ระบบประเมิน: {isAdult ? 'NEWS (ผู้ใหญ่)' : 'PEWS (เด็ก)'}
@@ -101,7 +149,7 @@ export const VitalSignForm = ({
           </Card>
         </Col>
         
-        {ageGroup !== null && (
+        {ageGroup !== null && !ageValidationError && (
           <>
             {/* Adult Form Sections */}
             {isAdult && (
