@@ -2,23 +2,25 @@
 
 ## สูตรการคำนวณคะแนน
 
+อยูในโค้ด [wasm/services/score.go](https://github.com/somprasongd/newspews/raw/dev/wasm/services/score.go)
+
 ## กำหนดกลุ่มอายุ (ageGroup)
 
 - คำนวณจาก `Year/Month/Day` แล้วแมปเป็นกลุ่ม 1–10
-  - 1: แรกเกิดถึง 96 ชม., 2: 4 วัน–1 เดือน, 3: อายุ 1 เดือน, 4: 2–11 เดือน, 5: ≤2 ปี, 6: ≤5 ปี, 7: ≤7 ปี, 8: ≤9 ปี, 9: ≤15 ปี, 10: ≥16 ปี (ผู้ใหญ่).
-- ถ้า `ageGroup == 10` ใช้สูตร **NEWS**; ถ้าไม่ใช่ใช้ **PEWS**. [GitHub](https://github.com/somprasongd/newspews/raw/dev/wasm/services/score.go)
+  - 1: แรกเกิดถึง 96 ชม., 2: 4 วัน–1 เดือน, 3: อายุ 1 เดือน, 4: 2–11 เดือน, 5: ≤2 ปี, 6: ≤5 ปี, 7: ≤7 ปี, 8: ≤9 ปี, 9: <15 ปี, 10: ≥15 ปี (ผู้ใหญ่).
+- ถ้า `ageGroup == 10` ใช้สูตร **NEWS**; ถ้าไม่ใช่ใช้ **PEWS**.
 
 ## โครงสูตรรวม
 
 - **NEWS (ผู้ใหญ่)**:
 
-    `Total = RR + HR + O2_sup + Temp + SysBP + SpO2 + AVPU` (คำนวณเป็นคะแนนย่อยแล้วบวกกัน). [GitHub](https://github.com/somprasongd/newspews/raw/dev/wasm/services/score.go)
+    `Total = RR + HR + O2_sup + Temp + SysBP + SpO2 + AVPU` (คำนวณเป็นคะแนนย่อยแล้วบวกกัน).
 
 - **PEWS (กุมาร)**:
 
     `Total = Behavior + Nebulize + Vomiting + Cardiovascular(CRT) + Respiratory + HR`
 
-    โดย `Respiratory = max(RR, O2_sup)` (เอาค่าสูงสุดระหว่างคะแนน RR และคะแนนเสริมออกซิเจน). [GitHub](https://github.com/somprasongd/newspews/raw/dev/wasm/services/score.go)
+    โดย `Respiratory = max(RR, O2_sup)` (เอาค่าสูงสุดระหว่างคะแนน RR และคะแนนเสริมออกซิเจน).
 
 ## เกณฑ์ให้คะแนนแต่ละตัว (สรุปตามเงื่อนไขในโค้ด)
 
@@ -29,7 +31,7 @@
 - **NEWS (ผู้ใหญ่ / กลุ่ม 10, ค่าที่ใช้: rrMin=8, rrMidl=11, rrMidu=20, rrMax=24)**
   - `≤8 → 3`, `≤11 → 1`, `≤20 → 0`, `≤24 → 2`, `>24 → 3`.
 - **PEWS (เด็ก)**
-  - `< rrMidl → 3`, `< rrMidu → 0`, `< rrMax → 1`, `≥ rrMax → 2`. [GitHub](https://github.com/somprasongd/newspews/raw/dev/wasm/services/score.go)
+  - `< rrMidl → 3`, `< rrMidu → 0`, `< rrMax → 1`, `≥ rrMax → 2`.
 
 ### 2) ชีพจร (HR)
 
@@ -38,36 +40,108 @@
 - **NEWS (ผู้ใหญ่ / กลุ่ม 10: hrMidl=50, hrMidu=110, hrMax=130)**
   - `≤40 → 3`, `≤50 → 1`, `≤90 → 0`, `≤110 → 1`, `≤130 → 2`, `>130 → 3`.
 - **PEWS (เด็ก)**
-  - `< hrMidl → 3`, `> hrMidu+30 → 3`, `> hrMidu+20 → 2`, อื่น ๆ → `0`. [GitHub](https://github.com/somprasongd/newspews/raw/dev/wasm/services/score.go)
+  - `< hrMidl → 3`, `> hrMidu+30 → 3`, `> hrMidu+20 → 2`, อื่น ๆ → `0`.
 
 ### 3) ออกซิเจนเสริม (O2_sup; หน่วยตามอินพุต)
 
 - **NEWS (ผู้ใหญ่)**: `0 L/min → 0`, ถ้ามีเสริมใด ๆ → `2`.
-- **PEWS (เด็ก)**: `≤2 → 0`, `3–5 → 1`, `6–7 → 2`, `≥8 → 3`. [GitHub](https://github.com/somprasongd/newspews/raw/dev/wasm/services/score.go)
+- **PEWS (เด็ก)**: `≤2 → 0`, `3–5 → 1`, `6–7 → 2`, `≥8 → 3`.
 
 ### 4) อุณหภูมิร่างกาย (Temp; เฉพาะ NEWS)
 
-`≤35 → 3`, `≤36 → 1`, `≤38 → 0`, `≤39 → 1`, `>39 → 2`. [GitHub](https://github.com/somprasongd/newspews/raw/dev/wasm/services/score.go)
+`≤35 → 3`, `≤36 → 1`, `≤38 → 0`, `≤39 → 1`, `>39 → 2`.
 
 ### 5) ความดันตัวบน (SysBP; เฉพาะ NEWS)
 
-`<90 → 3`, `≤100 → 2`, `≤110 → 1`, `≤219 → 0`, `>219 → 3`. *(โน้ต: โค้ดของเด็กถูกคอมเมนต์ไว้ ไม่ได้ใช้คำนวณ)* [GitHub](https://github.com/somprasongd/newspews/raw/dev/wasm/services/score.go)
+`<90 → 3`, `≤100 → 2`, `≤110 → 1`, `≤219 → 0`, `>219 → 3`. *(โน้ต: โค้ดของเด็กถูกคอมเมนต์ไว้ ไม่ได้ใช้คำนวณ)*
 
 ### 6) ค่าออกซิเจนปลายนิ้ว SpO₂ (เฉพาะ NEWS)
 
-`≤91 → 3`, `≤93 → 2`, `≤95 → 1`, `>95 → 0`. [GitHub](https://github.com/somprasongd/newspews/raw/dev/wasm/services/score.go)
+`≤91 → 3`, `≤93 → 2`, `≤95 → 1`, `>95 → 0`.
 
 ### 7) ระดับความรู้สึกตัว AVPU (เฉพาะ NEWS ใช้เป็นตัวชี้วัด)
 
-`"0" → 0` (Alert), โค้ดอื่น ๆ → `3`. [GitHub](https://github.com/somprasongd/newspews/raw/dev/wasm/services/score.go)
+`"0" → 0` (Alert), โค้ดอื่น ๆ → `3`.
 
 ### 8) พฤติกรรม/หัวใจ/พ่นยาพ่น/อาเจียน (เฉพาะ PEWS)
 
 - **Behavior**: `"0"→0`, `"1"→1`, `"2"→2`, อื่น ๆ → `3`
 - **Cardiovascular (CRT)**: `"0"→0`, `"1"→1`, `"2"→2`, อื่น ๆ → `3`
 - **Nebulize**: `"0"→0`, อื่น ๆ → `1`
-- **Vomiting**: `"0"→0`, อื่น ๆ → `1`. [GitHub](https://github.com/somprasongd/newspews/raw/dev/wasm/services/score.go)
+- **Vomiting**: `"0"→0`, อื่น ๆ → `1`.
 
 ---
 
-สรุป: ระบบจะเลือกสูตรจากกลุ่มอายุ (NEWS สำหรับผู้ใหญ่, PEWS สำหรับเด็ก), คิดคะแนนย่อยตามเกณฑ์ด้านบน แล้วบวกเป็นผลรวม ส่งกลับเป็น `{ type: "news"|"pews", score: <จำนวนคะแนน> }`.
+## การแปลผลคะแนน
+
+### NEWS2 (ผู้ใหญ่ ≥16 ปี)
+
+**ช่วงคะแนนรวมและการรับมือ (ตาม RCP London):**
+
+- **0 คะแนน (ต่ำมาก):** เฝ้าดูอาการตามปกติ; แนะนำวัดสัญญาณชีพอย่างน้อยทุก **12 ชม.**
+- **1–4 คะแนน (ต่ำ):** ให้พยาบาลวิชาชีพประเมินและพิจารณาปรับความถี่การติดตาม (**ประมาณทุก 4–6 ชม.** เป็นอย่างน้อย) หรือพิจารณา escalate ตามอาการ, แม้คะแนนต่ำแต่ถ้ากังวลทางคลินิกให้รีวิวทันทีได้เสมอ.
+- **“Single Red” (มีพารามิเตอร์ใดพุ่งได้ 3 คะแนน):** **ต้องรีวิวเร่งด่วน** โดยแพทย์/ผู้มีสมรรถนะด้านภาวะวิกฤต แม้คะแนนรวมจะไม่ถึง 5; ระหว่างรอรีวิวให้ติดตามถี่อย่างน้อย **ทุกชั่วโมง**.
+- **5–6 คะแนน (ปานกลาง):** **เกณฑ์สำคัญ** ต้องรีวิวเร่งด่วนโดยทีมที่ชำนาญภาวะผู้ป่วยเฉียบพลัน และพิจารณา escalate สู่ทีม critical care; เฝ้าดูอย่างน้อย **รายชั่วโมง** จนกว่าจะมีแผนดูแลชัดเจน.
+- **≥7 คะแนน (สูง):** **ภาวะฉุกเฉิน** ต้องให้ทีมที่มีทักษะ critical care (รวมทักษะทางเดินหายใจ) ประเมินอย่างเร่งด่วน และมักต้องย้ายไปพื้นที่ดูแลพิเศษ.
+
+**สัญญาณพิเศษ:** หากสงสัย/มีการติดเชื้อและ NEWS2 **≥5** ให้ **คิดถึงภาวะ Sepsis** และเรียกทีมที่ชำนาญทันที.
+
+---
+
+### PEWS (กุมารเวช)
+
+> อ้างอิง National PEWS (NHS England, 2023) ซึ่งจัดช่วงคะแนนรวมพร้อม “ระดับการ escalate” ชัดเจน (ใช้ได้ข้ามช่วงอายุด้วยแผ่น chart ต่างวัย)
+>
+
+**ช่วงคะแนนรวมและระดับการ escalate:**
+
+- **1–4 คะแนน → LOW (L):** แจ้งหัวหน้าพยาบาล/พิจารณาเพิ่มความถี่การติดตาม; **Reassess ภายใน ~60 นาที** และทำตามแผนที่ตกลงกับทีมแพทย์.
+- **5–8 คะแนน → MEDIUM (M):** หัวหน้าพยาบาลรีวิวและ **เรียกแพทย์ระดับ ST3+ (หรือเทียบเท่า) ภายใน 30 นาที**; พิจารณาเฝ้าดู SpO₂ ต่อเนื่อง; **Reassess ภายใน ~30 นาที**.
+- **9–12 คะแนน → HIGH (H):** **Rapid review** โดยแพทย์ที่มีทักษะทางเดินหายใจ (ST3+ หรือเทียบเท่า) และ/หรือ outreach **ภายใน 15 นาที**; เฝ้าดูอย่างต่อเนื่อง (RR/SpO₂/ECG).
+- **≥13 คะแนน → EMERGENCY (E):** **เรียกฉุกเฉินทันที** (เช่น 2222 “Paediatric Medical Emergency”) และให้แพทย์ผู้เชี่ยวชาญร่วมกำหนดแผน stabilisation ด่วน.
+
+**หมายเหตุใช้งาน:** แผ่น National PEWS ยังระบุให้ **escalate แม้คะแนนไม่สูง** หากมี “specific concern” (เช่น ชัก/ติดเชื้อ), ความกังวลของผู้ดูแล (carer), สัญชาตญาณคลินิกของเจ้าหน้าที่ หรือมี **sepsis trigger**—ให้ยึด “ระดับสูงสุด” ของเกณฑ์ที่เปลี่ยนไปข้อใดข้อหนึ่งทันที.
+
+---
+
+### ตัวอย่างโครง mapping (เอาไปแสดงผลหลังคำนวณ)
+
+```json
+{
+  "NEWS2": [
+    {"range": "0", "risk": "ต่ำมาก", "action": "ติดตามอย่างน้อย q12h"},
+    {"range": "1-4", "risk": "ต่ำ", "action": "พยาบาลประเมิน; พิจารณา q4–6h"},
+    {"range": "single 3", "risk": "เตือนแดงเดี่ยว", "action": "รีวิวแพทย์เร่งด่วน; q1h"},
+    {"range": "5-6", "risk": "ปานกลาง", "action": "รีวิวเร่งด่วน/พิจารณา critical care; q1h"},
+    {"range": "≥7", "risk": "สูง/ฉุกเฉิน", "action": "ทีม critical care ประเมินทันที/ย้าย HDU/ICU"}
+  ],
+  "PEWS": [
+    {"range": "1-4", "level": "LOW", "action": "แจ้งหัวหน้าพยาบาล; reassess ≤60 นาที"},
+    {"range": "5-8", "level": "MEDIUM", "action": "แพทย์ ST3+ ภายใน 30 นาที; monitor ต่อเนื่อง"},
+    {"range": "9-12", "level": "HIGH", "action": "Rapid review ภายใน 15 นาที; monitor ต่อเนื่อง"},
+    {"range": "≥13", "level": "EMERGENCY", "action": "เรียกฉุกเฉินทันที; consultant ร่วมวางแผน"}
+  ]
+}
+
+```
+
+> คำเตือนทางคลินิกสั้น ๆ: เครื่องมือเหล่านี้ช่วย “ชี้เป้า” ไม่ใช่แทนการตัดสินใจของทีมรักษา—หากสภาพผู้ป่วยน่าเป็นห่วง ให้ escalate ทันที แม้คะแนนจะไม่เข้าเกณฑ์ระดับสูงก็ตาม
+>
+
+### อ้างอิงหลัก
+
+- Royal College of Physicians. *National Early Warning Score (NEWS) 2 – Thresholds & Clinical Response.* รวมทั้งความถี่การติดตามและเกณฑ์ sepsis. [rcp.ac.uk](https://www.rcp.ac.uk/media/a4ibkkbf/news2-final-report_0_0.pdf)
+- NHS England. *National Paediatric Early Warning System (PEWS) – Observation & Escalation Charts* (ตัวอย่างช่วงอายุ 1–4 ปี และ 5–12 ปี) ซึ่งระบุช่วงคะแนนรวมและเวลาการรีวิว. [england.nhs.uk(1-4)](https://www.england.nhs.uk/wp-content/uploads/2023/11/pews-observation-and-escalation-chart-1-4-years-updated.pdf), [england.nhs.uk(5-12)](https://www.england.nhs.uk/wp-content/uploads/2023/11/pews-observation-and-escalation-chart-5-12-years-updated.pdf)
+
+---
+
+สรุป: ระบบจะเลือกสูตรจากกลุ่มอายุ (NEWS สำหรับผู้ใหญ่, PEWS สำหรับเด็ก), คิดคะแนนย่อยตามเกณฑ์ด้านบน แล้วบวกเป็นผลรวม ส่งกลับเป็น JSON
+
+```json
+{ 
+ type: "news"|"pews", 
+ score: <จำนวนคะแนน>,
+ level: "**ระดับการ** escalate",
+ action: "**การรับมือ**"
+}
+```

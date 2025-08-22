@@ -1,56 +1,11 @@
 package services
 
 import (
+	"strconv"
+	"strings"
+
 	"github.com/somprasongd/newspews/validator"
 )
-
-type InputDTO struct {
-	Age          Age     `json:"age"  validate:"required"`
-	Temp         float32 `json:"temperature"`
-	Sys          uint    `json:"systolic"`
-	Dia          uint    `json:"diastolic"`
-	Rr           uint    `json:"respiratory_rate"`
-	Hr           uint    `json:"heart_rate"`
-	O2           uint    `json:"oxygen"`
-	Spo2         uint    `json:"spo2"`
-	AvpuCode     string  `json:"avpu_code"`
-	CrtCode      string  `json:"cardiovascular_code"`
-	BehaviorCode string  `json:"behavior_code"`
-	NebulizeCode string  `json:"nebulize_code"`
-	VomitingCode string  `json:"vomiting_code"`
-}
-
-type Age struct {
-	Year  uint `json:"year" validate:"gte=0"`
-	Month uint `json:"month" validate:"gte=0,lte=11"`
-	Day   uint `json:"day" validate:"gte=0,lte=31,required_if=Year 0 Month 0"`
-}
-
-type ScoreResponse struct {
-	Type  string `json:"type"`
-	Score uint   `json:"score"`
-}
-
-type newsInput struct {
-	Rr       uint    `validate:"number,gte=0,lt=200"`
-	Hr       uint    `validate:"number,gte=0,lt=600"`
-	Temp     float32 `validate:"number,gte=0,lt=50"`
-	Sys      uint    `validate:"number,gte=0,lt=400"`
-	Dia      uint    `validate:"number,gte=0,lt=250"`
-	O2       uint    `validate:"number,gte=0,lte=150"`
-	Spo2     uint    `validate:"number,gte=0,lte=100"`
-	AvpuCode string  `validate:"number,oneof='0' '1' '2' '3',required"`
-}
-
-type pewsInput struct {
-	Rr           uint   `validate:"number,gte=0,lt=200"`
-	Hr           uint   `validate:"number,gte=0,lt=600"`
-	O2           uint   `validate:"number,gte=0,lte=150"`
-	BehaviorCode string `validate:"number,oneof='0' '1' '2' '3',required"`
-	CrtCode      string `validate:"number,oneof='0' '1' '2' '3',required"`
-	NebulizeCode string `validate:"number,oneof='0' '1',required"`
-	VomitingCode string `validate:"number,oneof='0' '1',required"`
-}
 
 type ScoreService interface {
 	CalculateScore(dto InputDTO) (*ScoreResponse, error)
@@ -74,7 +29,7 @@ func (s scoreService) CalculateScore(input InputDTO) (*ScoreResponse, error) {
 	ageGroup := calculateAgeGroup(input.Age.Year, input.Age.Month, input.Age.Day)
 
 	// ageGroup เท่ากับ 10 จะเป็น NEWS ถ้าไม่ใช่จะเป็น PEWS
-	scoreRes := &ScoreResponse{}
+	res := &ScoreResponse{}
 	switch ageGroup {
 	case 10: // news
 		news := newsInput{
@@ -87,13 +42,17 @@ func (s scoreService) CalculateScore(input InputDTO) (*ScoreResponse, error) {
 			Spo2:     input.Spo2,
 			AvpuCode: input.AvpuCode,
 		}
-		score, err := calculateNewsScore(ageGroup, news)
+		// calculate NEWS score and whether any parameter scored 3 (single red)
+		score, hasRed, err := calculateNewsScore(ageGroup, news)
 		if err != nil {
 			return nil, err
 		}
-
-		scoreRes.Type = "news"
-		scoreRes.Score = score
+		res.Type = "news"
+		res.Score = score
+		if esc, ok := interpretNewsEscalation(score, hasRed); ok {
+			res.Level = esc.Level
+			res.Action = esc.Action
+		}
 	default: // pews
 		pews := pewsInput{
 			BehaviorCode: input.BehaviorCode,
@@ -109,13 +68,21 @@ func (s scoreService) CalculateScore(input InputDTO) (*ScoreResponse, error) {
 			return nil, err
 		}
 
-		scoreRes.Type = "pews"
-		scoreRes.Score = score
+		res.Type = "pews"
+		res.Score = score
+		if esc, ok := interpretPewsEscalation(score); ok {
+			res.Level = esc.Level
+			res.Action = esc.Action
+		}
 	}
 
-	return scoreRes, nil
+	return res, nil
 }
 
+// calculateAgeGroup determines the age group used by the scoring system.
+// It returns 10 for adults (NEWS), otherwise a number 1–9 for various
+// paediatric age brackets. The logic follows the original NEWS/PEWS
+// specification.
 func calculateAgeGroup(year, month, day uint) uint {
 	switch {
 	case year == 0:
@@ -145,11 +112,17 @@ func calculateAgeGroup(year, month, day uint) uint {
 	}
 }
 
-func calculateNewsScore(ageGroup uint, input newsInput) (uint, error) {
+// calculateNewsScore sums the component scores for adults and reports
+// whether any single component reached the maximum score of 3. The
+// boolean return value is used to trigger the "single 3" escalation
+// rule in interpretNewsEscalation. Note: the original implementation
+// simply returned the total score; this extended version preserves
+// backwards compatibility by still returning the total score first.
+func calculateNewsScore(ageGroup uint, input newsInput) (uint, bool, error) {
 	// validate required field
 	err := validator.ValidateStruct(input)
 	if err != nil {
-		return 0, err
+		return 0, false, err
 	}
 
 	rrScore := calculateRRScore(ageGroup, input.Rr)
@@ -160,11 +133,20 @@ func calculateNewsScore(ageGroup uint, input newsInput) (uint, error) {
 	o2satScore := calculateO2satScore(ageGroup, input.Spo2)
 	avpuScore := calculateAvpuScore(input.AvpuCode)
 
-	score := rrScore + hrScore + o2supScore + btScore + bpScore + o2satScore + avpuScore
+	total := rrScore + hrScore + o2supScore + btScore + bpScore + o2satScore + avpuScore
 
-	return score, nil
+	// Determine if any component scored 3. Note that o2supScore for NEWS2
+	// only returns 0 or 2, so this check covers BT, BP, RR, HR, O2SAT and AVPU.
+	hasSingleRed := rrScore == 3 || hrScore == 3 || btScore == 3 || bpScore == 3 || o2satScore == 3 || avpuScore == 3
+
+	return total, hasSingleRed, nil
 }
 
+// calculatePewsScore sums the component scores for paediatric patients. It
+// replicates the original implementation exactly but remains unchanged
+// because single red logic does not apply to PEWS. Should additional
+// escalation triggers be introduced for PEWS in future, this function
+// could be expanded to return further metadata.
 func calculatePewsScore(ageGroup uint, input pewsInput) (uint, error) {
 	// validate required field
 	err := validator.ValidateStruct(input)
@@ -176,15 +158,14 @@ func calculatePewsScore(ageGroup uint, input pewsInput) (uint, error) {
 	cardioScore := calculateCardiovascularScore(input.CrtCode)
 	nebulizeScore := calculateNebulizeScore(input.NebulizeCode)
 	vomitingScore := calculateVomitingScore(input.VomitingCode)
-
 	hrScore := calculateHRScore(ageGroup, input.Hr)
 	rrScore := calculateRRScore(ageGroup, input.Rr)
 	o2supScore := calculateO2supScore(ageGroup, input.O2)
 	respiScore := calculateRespiScore(rrScore, o2supScore)
 
-	score := behaviorScore + nebulizeScore + vomitingScore + cardioScore + respiScore + hrScore
+	total := behaviorScore + nebulizeScore + vomitingScore + cardioScore + respiScore + hrScore
 
-	return score, nil
+	return total, nil
 }
 
 var (
@@ -401,4 +382,91 @@ func calculateRespiScore(rrScore uint, o2supScore uint) uint {
 	} else {
 		return o2supScore
 	}
+}
+
+// interpretNewsEscalation selects the appropriate escalation for a given
+// NEWS2 score. It accepts the total score and a boolean flag indicating
+// whether any single parameter scored three points (single red). The
+// function returns the matching escalation and a boolean indicating
+// whether a match was found.
+func interpretNewsEscalation(total uint, hasSingleRed bool) (Escalation, bool) {
+	for _, e := range newsEscalations {
+		// Handle the special "single 3" case first
+		if e.Range == "single 3" {
+			if hasSingleRed {
+				return e, true
+			}
+			continue
+		}
+		if matchesRange(total, e.Range) {
+			return e, true
+		}
+	}
+	return Escalation{}, false
+}
+
+// interpretPewsEscalation selects the escalation for a PEWS score. It
+// simply matches against the configured ranges and returns the first
+// matching escalation.
+func interpretPewsEscalation(total uint) (Escalation, bool) {
+	for _, e := range pewsEscalations {
+		if matchesRange(total, e.Range) {
+			return e, true
+		}
+	}
+	return Escalation{}, false
+}
+
+// matchesRange checks if a score falls within a textual range. Supported
+// formats include:
+//   - "n"        – exact match
+//   - "a-b"      – inclusive range
+//   - ">=n"      – greater than or equal to
+//   - "<=n"      – less than or equal to
+//   - ">n" or "<n" – strict comparisons
+//
+// Unicode variants of >= and <= are normalized to their ASCII
+// equivalents before parsing.
+func matchesRange(score uint, rng string) bool {
+	r := strings.TrimSpace(rng)
+	// normalise unicode
+	r = strings.ReplaceAll(r, "≥", ">=")
+	r = strings.ReplaceAll(r, "≤", "<=")
+	if strings.Contains(r, "-") {
+		parts := strings.SplitN(r, "-", 2)
+		if len(parts) != 2 {
+			return false
+		}
+		aStr, bStr := strings.TrimSpace(parts[0]), strings.TrimSpace(parts[1])
+		a, err1 := strconv.Atoi(aStr)
+		b, err2 := strconv.Atoi(bStr)
+		if err1 != nil || err2 != nil {
+			return false
+		}
+		return int(score) >= a && int(score) <= b
+	}
+	for _, op := range []string{">=", "<=", ">", "<"} {
+		if strings.HasPrefix(r, op) {
+			valStr := strings.TrimSpace(r[len(op):])
+			n, err := strconv.Atoi(valStr)
+			if err != nil {
+				return false
+			}
+			switch op {
+			case ">=":
+				return int(score) >= n
+			case "<=":
+				return int(score) <= n
+			case ">":
+				return int(score) > n
+			case "<":
+				return int(score) < n
+			}
+		}
+	}
+	// exact match case
+	if val, err := strconv.Atoi(r); err == nil {
+		return int(score) == val
+	}
+	return false
 }

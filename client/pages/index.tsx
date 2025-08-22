@@ -75,12 +75,15 @@ const Home: NextPage = (props: any) => {
               <div style={{ marginTop: 24 }}>
                 <ResultDisplay 
                   score={response.score} 
+                  type={response.type} 
+                  level={response.level} 
+                  action={response.action} 
                   onReset={handleReset} 
                 />
                 <div style={{ textAlign: 'center', marginTop: 24 }}>
                   <Text type="secondary">
                     คะแนนของคุณคือ {response.score} ซึ่งอยู่ในระดับ{' '}
-                    {response.score >= 5 ? 'สูง' : response.score >= 3 ? 'ปานกลาง' : 'ต่ำ'}
+                    {response.level}
                   </Text>
                 </div>
               </div>
