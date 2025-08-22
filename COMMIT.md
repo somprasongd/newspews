@@ -1,5 +1,40 @@
 # Commit Summary
 
+## chore(ci): update githubpage workflow to use latest actions and best practices (1b08f06)
+
+* Update runner to `ubuntu-latest`
+* Update GitHub Actions to latest major versions (`actions/checkout@v4`, `actions/setup-go@v5`, `actions/setup-node@v4`)
+* Replace `peaceiris/actions-gh-pages` with official GitHub Pages actions (`actions/configure-pages@v5`, `actions/upload-pages-artifact@v3`, `actions/deploy-pages@v4`)
+* Add permissions and concurrency blocks
+* Simplify Node.js caching using `actions/setup-node`'s built-in `cache: 'npm'` option
+* Set Go version to `1.25` and Node version to `20.x`
+* Add `-ldflags="-s -w"` to the `go build` command for WASM optimization
+* Add environment configuration for deployment
+
+### Detailed Changes
+
+#### chore(ci): update githubpage workflow
+
+* Updated runner from `ubuntu-20.04` to `ubuntu-latest`
+* Updated `actions/checkout` from `v2` to `v4`
+* Updated `actions/setup-go` from `v2` to `v5`
+* Updated `actions/setup-node` from `v2` to `v4`
+* Replaced `peaceiris/actions-gh-pages@v2.5.0` with `actions/configure-pages@v5`, `actions/upload-pages-artifact@v3`, and `actions/deploy-pages@v4`
+* Added `permissions` block for explicit token permissions
+* Added `concurrency` block to prevent concurrent deployments
+* Added `environment` block for deployment tracking
+* Changed Node.js version from `16.x` to `20.x`
+* Utilized `actions/setup-node`'s built-in `cache: 'npm'` option
+* Added `-ldflags="-s -w"` to the `go build` command in the "Build WASM" step
+* Updated Go version from `1.17.6` to `1.25`
+
+### Commit Statistics
+
+* Commit ID: 1b08f06
+* 1 file changed
+* 38 insertions
+* 25 deletions
+
 ## chore: update project with Qwen context and improvements (94aa29c)
 
 * Add QWEN.md file for project context
