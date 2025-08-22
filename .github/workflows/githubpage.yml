@@ -50,7 +50,6 @@ jobs:
         run: |
           cd client
           npm run build
-          npm run export
           touch ./out/.nojekyll
           touch ./out/_next/.nojekyll
         env:
