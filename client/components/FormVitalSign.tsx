@@ -1,19 +1,19 @@
 import {
-  Form,
-  Row,
-  Col,
-  Input,
+  Alert,
   Button,
   Card,
-  Typography,
-  Alert,
+  Col,
+  Form,
+  Input,
   Radio,
+  Row,
   Space,
+  Typography,
 } from 'antd';
-import { InputTypeNumber } from './InputTypeNumber';
-import { calculateAgeGroup } from '../shared/func';
 import { useState } from 'react';
+import { calculateAgeGroup } from '../shared/func';
 import { InputTypeAge } from './InputTypeAge';
+import { InputTypeNumber } from './InputTypeNumber';
 const { Text } = Typography;
 
 interface FormVitalSignProps {

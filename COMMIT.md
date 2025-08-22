@@ -1,5 +1,72 @@
 # Commit Summary
 
+## feat(client): enhance UI/UX with modern responsive design and update age group calculation (24c2447)
+
+* Created modern responsive UI components for better user experience
+* Updated age group calculation from `year < 15` to `year <= 15` for consistency
+* Added new modern components:
+  * Button.tsx - Modern button component with consistent styling
+  * Card.tsx - Enhanced card component with better styling and shadows
+  * Header.tsx - Modern header with GitHub link and responsive design
+  * InputNumber.tsx - Improved input component for numeric values
+  * RadioGroup.tsx - Enhanced radio group with better text handling
+  * ResultDisplay.tsx - Modern result display with risk level indicators
+  * VitalSignForm.tsx - Complete form component with responsive layout
+* Updated main page to use modern components and responsive layout
+* Enhanced styling with better responsive design and modern aesthetics
+* Fixed radio button text display issues for multi-line descriptions
+* Added GitHub link to navbar with icon only
+
+### Detailed Changes
+
+#### feat(client): create modern UI components
+
+* Created `client/components/modern/` directory for new components
+* Implemented modern Button component with consistent styling
+* Created enhanced Card component with better visual design
+* Developed modern Header component with responsive layout
+* Built improved InputNumber component for better numeric input
+* Created enhanced RadioGroup component with better text handling
+* Developed ResultDisplay component for modern result presentation
+* Built complete VitalSignForm component with responsive layout
+
+#### feat(client): update main page with modern design
+
+* Replaced old components with modern responsive components
+* Implemented responsive layout using Ant Design grid system
+* Updated page structure for better user experience
+* Added proper spacing and visual hierarchy
+
+#### feat(client): enhance styling and responsiveness
+
+* Updated CSS with modern responsive design principles
+* Added better styling for all form elements
+* Implemented responsive adjustments for different screen sizes
+* Improved visual design with modern aesthetics
+
+#### fix(client): resolve radio button text display issues
+
+* Fixed issue with multi-line text not displaying properly in radio buttons
+* Adjusted styling to accommodate longer descriptions
+* Improved text wrapping and overflow handling
+
+#### feat(client): add GitHub link to navbar
+
+* Added GitHub icon link to header for easy repository access
+* Implemented clean design with icon only (no text)
+
+#### chore(client): update age group calculation
+
+* Updated age group calculation in VitalSignForm from `year < 15` to `year <= 15`
+* Ensured consistency with backend calculation logic
+
+### Commit Statistics
+
+* Commit ID: 24c2447
+* 17 files changed
+* 9074 insertions(+)
+* 3673 deletions(-)
+
 ## chore(ci): update githubpage workflow to use latest actions and best practices (1b08f06)
 
 * Update runner to `ubuntu-latest`

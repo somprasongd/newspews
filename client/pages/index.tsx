@@ -1,70 +1,17 @@
 import React, { useState } from 'react';
-import { FormVitalSign } from '../components/FormVitalSign';
 import { NextPage } from 'next';
 import { geolocated } from 'react-geolocated';
 import { calculateNewsPews } from '../services/calculate';
+import { Layout, Typography, Row, Col } from 'antd';
+import { Header } from '../components/modern/Header';
+import { VitalSignForm } from '../components/modern/VitalSignForm';
+import { ResultDisplay } from '../components/modern/ResultDisplay';
 
-import { Row, Col, Card, Layout, Typography } from 'antd';
 const { Content } = Layout;
-const { Title } = Typography;
+const { Text } = Typography;
 
 const Home: NextPage = (props: any) => {
-  const [crt, setCrt] = useState<any>([
-    {
-      id: '0',
-      description: 'ชมพู capillary refill 1-2 วิ',
-    },
-    {
-      id: '1',
-      description: 'ซีด capillary refill 3 วิ',
-    },
-    {
-      id: '2',
-      description: 'เทา capillary refill 4 วิ',
-    },
-    {
-      id: '3',
-      description: 'ตัวลาย capillary refill ≥5 วิ',
-    },
-  ]);
-  const [avpu, setAvpu] = useState<any>([
-    {
-      id: '0',
-      description: 'Alert ตื่นดี',
-    },
-    {
-      id: '1',
-      description: 'Voice ตอบสนองต่อการเรียก',
-    },
-    {
-      id: '2',
-      description: 'Pain ตอบสนองต่อเจ็บ',
-    },
-    {
-      id: '3',
-      description: 'Unresponsive ไม่ตอบสนอง',
-    },
-  ]);
-
-  const [behavior, setBehavior] = useState<any>([
-    {
-      id: '0',
-      description: 'เล่นดี',
-    },
-    {
-      id: '1',
-      description: 'หลับ',
-    },
-    {
-      id: '2',
-      description: 'กระสับกระส่าย',
-    },
-    {
-      id: '3',
-      description: 'ซึม/สับสน/ไม่ค่อยตอบสนองต่อเจ็บ',
-    },
-  ]);
-  const [initialValues, setInitialValues] = useState<any>({
+  const [initialValues] = useState<any>({
     vomitting: '',
     receivedNebulization: '',
     behavior: '',
@@ -107,33 +54,46 @@ const Home: NextPage = (props: any) => {
         };
       }
       const res = await calculateNewsPews(data);
-
       setResponse(res);
     }
   };
 
+  const handleReset = () => {
+    setResponse(null);
+  };
+
   return (
-    <Layout style={{ alignItems: 'center' }}>
-      <Content
-        style={{
-          maxWidth: 500,
-          padding: 8,
-          margin: 0,
-        }}
-      >
-        <Row>
-          <Col span={24} style={{ textAlign: 'center' }}>
-            <Title level={4}>Early Warning Sign Calculator [NEWS/PEWS]</Title>
+    <Layout style={{ minHeight: '100vh' }}>
+      <Header 
+        title="Early Warning Sign Calculator" 
+        subtitle="[NEWS/PEWS]" 
+      />
+      <Content style={{ padding: 16 }}>
+        <Row justify="center">
+          <Col xs={24} sm={20} md={16} lg={12}>
+            {response ? (
+              <div style={{ marginTop: 24 }}>
+                <ResultDisplay 
+                  score={response.score} 
+                  onReset={handleReset} 
+                />
+                <div style={{ textAlign: 'center', marginTop: 24 }}>
+                  <Text type="secondary">
+                    คะแนนของคุณคือ {response.score} ซึ่งอยู่ในระดับ{' '}
+                    {response.score >= 5 ? 'สูง' : response.score >= 3 ? 'ปานกลาง' : 'ต่ำ'}
+                  </Text>
+                </div>
+              </div>
+            ) : (
+              <div style={{ marginTop: 24 }}>
+                <VitalSignForm
+                  initialValues={initialValues}
+                  onSubmit={onSubmit}
+                  onReset={handleReset}
+                />
+              </div>
+            )}
           </Col>
-          <FormVitalSign
-            initialValues={initialValues}
-            submit={onSubmit}
-            crt={crt}
-            avpu={avpu}
-            behavior={behavior}
-            setResponse={setResponse}
-            response={response}
-          />
         </Row>
       </Content>
     </Layout>
