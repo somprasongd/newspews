@@ -21,29 +21,29 @@ The core logic for calculating these scores is implemented in **Go** and compile
 
 Based on the `README.md` and `wasm/services/score.go`:
 
-1.  **Age Group Determination:** The input patient's age (year, month, day) is used to determine an `ageGroup` (1-10).
-2.  **Score Selection:** If `ageGroup` is 10 (adults, >=15 years), the **NEWS** formula is used. Otherwise, the **PEWS** formula is used.
-3.  **Parameter Scoring:** Each physiological parameter (e.g., RR, HR, Temp) is scored individually based on predefined ranges. These ranges can vary depending on the `ageGroup`.
-4.  **Total Score Calculation:**
-    -   **NEWS:** `Total = RR + HR + O2_sup + Temp + SysBP + SpO2 + AVPU`
-    -   **PEWS:** `Total = Behavior + Nebulize + Vomiting + Cardiovascular(CRT) + Respiratory + HR`
-    -   Note: For PEWS, `Respiratory = max(RR_score, O2_sup_score)`.
+1. **Age Group Determination:** The input patient's age (year, month, day) is used to determine an `ageGroup` (1-10).
+2. **Score Selection:** If `ageGroup` is 10 (adults, >=15 years), the **NEWS** formula is used. Otherwise, the **PEWS** formula is used.
+3. **Parameter Scoring:** Each physiological parameter (e.g., RR, HR, Temp) is scored individually based on predefined ranges. These ranges can vary depending on the `ageGroup`.
+4. **Total Score Calculation:**
+    - **NEWS:** `Total = RR + HR + O2_sup + Temp + SysBP + SpO2 + AVPU`
+    - **PEWS:** `Total = Behavior + Nebulize + Vomiting + Cardiovascular(CRT) + Respiratory + HR`
+    - Note: For PEWS, `Respiratory = max(RR_score, O2_sup_score)`.
 
 ## Building and Running
 
-1.  **Build WASM Module:**
-    -   Run the command specified in the `Makefile` target `wasm`. This command:
-        -   Sets environment variables `GOOS=js` and `GOARCH=wasm`.
-        -   Uses `go build` to compile the Go code in the `wasm` directory into a `newspews.wasm` file.
-        -   Places the resulting `newspews.wasm` file into `client/public/`.
-        -   Copies the necessary `wasm_exec.js` helper file (from the Go installation) into `client/public/`.
-    -   Command: `cd ./wasm && GOOS=js GOARCH=wasm go build -o ../client/public/newspews.wasm && cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" ../client/public/`
-    -   Shortcut: `make wasm`
-2.  **Run the Development Server (Frontend):**
-    -   Navigate to the `client` directory.
-    -   Install dependencies (if not already done): `npm install` or `yarn install`.
-    -   Start the Next.js development server: `npm run dev` or `yarn dev`.
-    -   The application will typically be available at `http://localhost:3000`.
+1. **Build WASM Module:**
+    - Run the command specified in the `Makefile` target `wasm`. This command:
+        - Sets environment variables `GOOS=js` and `GOARCH=wasm`.
+        - Uses `go build` to compile the Go code in the `wasm` directory into a `newspews.wasm` file.
+        - Places the resulting `newspews.wasm` file into `client/public/`.
+        - Copies the necessary `wasm_exec.js` helper file (from the Go installation) into `client/public/`.
+    - Command: `cd ./wasm && GOOS=js GOARCH=wasm go build -o ../client/public/newspews.wasm && cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" ../client/public/`
+    - Shortcut: `make wasm`
+2. **Run the Development Server (Frontend):**
+    - Navigate to the `client` directory.
+    - Install dependencies (if not already done): `npm install` or `yarn install`.
+    - Start the Next.js development server: `npm run dev` or `yarn dev`.
+    - The application will typically be available at `http://localhost:3000`.
 
 ## Development Conventions
 
